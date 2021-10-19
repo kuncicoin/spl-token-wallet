@@ -1,5 +1,5 @@
 import { clusterApiUrl } from '@solana/web3.js';
-import { MAINNET_URL, MAINNET_BACKUP_URL } from '../utils/connection';
+import { MAINNET_URL, TESTNET_URL } from '../utils/connection';
 
 export const CLUSTERS = [
   {
@@ -8,10 +8,10 @@ export const CLUSTERS = [
     label: 'Mainnet Beta',
     clusterSlug: 'mainnet-beta',
   },
-  {
+  /*{
     name: 'mainnet-beta-backup',
     apiUrl: MAINNET_BACKUP_URL,
-      label: 'Mainnet Beta Backup',
+    label: 'Mainnet Beta Backup',
     clusterSlug: 'mainnet-beta',
   },
   {
@@ -19,19 +19,19 @@ export const CLUSTERS = [
     apiUrl: clusterApiUrl('devnet'),
     label: 'Devnet',
     clusterSlug: 'devnet',
-  },
+  },*/
   {
     name: 'testnet',
-    apiUrl: clusterApiUrl('testnet'),
+    apiUrl: TESTNET_URL,
     label: 'Testnet',
     clusterSlug: 'testnet',
   },
-  {
+  /*{
     name: 'localnet',
     apiUrl: 'http://localhost:8899',
     label: null,
     clusterSlug: 'localnet',
-  }
+  }*/
 ];
 
 export function clusterForEndpoint(endpoint) {

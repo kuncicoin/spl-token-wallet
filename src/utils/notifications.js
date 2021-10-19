@@ -59,9 +59,9 @@ function ViewTransactionOnExplorerButton({ signature }) {
       component="a"
       target="_blank"
       rel="noopener"
-      href={`https://solscan.io/tx/${signature}` + urlSuffix}
+      href={`https://kunciscan.com/tx/${signature}` + urlSuffix}
     >
-      View on Solscan
+      View on Kunciscan
     </Button>
   );
 }

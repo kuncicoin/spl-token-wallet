@@ -88,14 +88,14 @@ export default function NavigationFrame({ children }) {
             }}
           >
             <Typography>
-              Beware of sites attempting to impersonate sollet.io or other DeFi
+              Beware of sites attempting to impersonate wallet.kuncicoin.com or other DeFi
               services.
             </Typography>
           </div>
         )}
         <Toolbar>
           <Typography variant="h6" className={classes.title} component="h1">
-            {isExtensionWidth ? 'Sollet' : 'Solana SPL Token Wallet'}
+            {isExtensionWidth ? 'Wallet' : 'Kucincoin SPL Token Wallet'}
           </Typography>
           <NavigationButtons />
         </Toolbar>
@@ -264,7 +264,7 @@ function NetworkSelector() {
             </ListItemIcon>
             {cluster.name === 'mainnet-beta-backup'
               ? 'Mainnet Beta Backup'
-              : cluster.apiUrl}
+              : cluster.label}
           </MenuItem>
         ))}
         <MenuItem

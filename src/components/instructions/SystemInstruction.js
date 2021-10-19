@@ -5,7 +5,7 @@ import LabelValue from './LabelValue';
 const TYPE_LABELS = {
   systemCreate: 'Create account',
   systemCreateWithSeed: 'Create account with seed',
-  systemTransfer: 'Transfer SOL',
+  systemTransfer: 'Transfer KUNCI',
 };
 
 const DATA_LABELS = {

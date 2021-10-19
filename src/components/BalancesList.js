@@ -617,9 +617,9 @@ function BalanceListItemDetails({
 
   let { mint, tokenName, tokenSymbol, owner, amount } = balanceInfo;
 
-  // Only show the export UI for the native SOL coin.
+  // Only show the export UI for the native KUNCI coin.
   const exportNeedsDisplay =
-    mint === null && tokenName === 'SOL' && tokenSymbol === 'SOL';
+    mint === null && tokenName === 'KUNCI' && tokenSymbol === 'KUNCI';
 
   const market = tokenSymbol
     ? serumMarkets[tokenSymbol.toUpperCase()]
@@ -645,12 +645,12 @@ function BalanceListItemDetails({
           <Typography variant="body2">
             <Link
               href={
-                `https://solscan.io/account/${publicKey.toBase58()}` + urlSuffix
+                `https://kunciscan.com/address/${publicKey.toBase58()}` + urlSuffix
               }
               target="_blank"
               rel="noopener"
             >
-              View on Solscan
+              View on Kunciscan
             </Link>
           </Typography>
           {market && (

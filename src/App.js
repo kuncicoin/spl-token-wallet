@@ -86,7 +86,7 @@ function PageContents() {
   const [page] = usePage();
   const [showWalletSuggestion, setShowWalletSuggestion] = useState(true);
   const suggestionKey = 'private-irgnore-wallet-suggestion';
-  const ignoreSuggestion = window.localStorage.getItem(suggestionKey);
+  const ignoreSuggestion = true; //window.localStorage.getItem(suggestionKey);
   if (!wallet) {
     return (
       <>
@@ -140,7 +140,7 @@ function WalletSuggestionDialog({ open, onClose, onIgnore }) {
             {' '}
             open source
           </a>{' '}
-          wallet for advanced users and developers. For the best Solana
+          wallet for advanced users and developers. For the best Kucincoin
           experience and user support, it is recommended to use <b>
             Phantom
           </b>{' '}

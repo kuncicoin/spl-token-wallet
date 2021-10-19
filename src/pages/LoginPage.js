@@ -120,7 +120,7 @@ function SeedWordsForm({ mnemonicAndSeed, goForward }) {
             Create New Wallet
           </Typography>
           <Typography paragraph>
-            Create a new wallet to hold Solana and SPL tokens.
+            Create a new wallet to hold Kucincoin and SPL tokens.
           </Typography>
           <Typography>
             Please write down the following twenty four words and keep them in a
@@ -145,7 +145,7 @@ function SeedWordsForm({ mnemonicAndSeed, goForward }) {
             storage is cleared or your device is damaged or lost.
           </Typography>
           <Typography paragraph>
-            By default, sollet will use <code>m/44'/501'/0'/0'</code> as the
+            By default, wallet will use <code>m/44'/501'/0'/0'</code> as the
             derivation path for the main wallet. To use an alternative path, try
             restoring an existing wallet.
           </Typography>

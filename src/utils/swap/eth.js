@@ -235,11 +235,11 @@ export function ConnectToMetamaskButton() {
         color="primary"
         variant="outlined"
         component="a"
-        href={isExtension ? 'https://sollet.io' : 'https://metamask.io/'}
+        href={isExtension ? 'https://wallet.kuncicoin.com' : 'https://metamask.io/'}
         target="_blank"
         rel="noopener"
       >
-        {isExtension ? 'Open sollet.io' : 'Connect to MetaMask'}
+        {isExtension ? 'Open wallet.kuncicoin.com' : 'Connect to MetaMask'}
       </Button>
     );
   }
