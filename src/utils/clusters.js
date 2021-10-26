@@ -5,7 +5,7 @@ export const CLUSTERS = [
   {
     name: 'mainnet-beta',
     apiUrl: MAINNET_URL,
-    label: 'Mainnet Beta',
+    label: 'Mainnet',
     clusterSlug: 'mainnet-beta',
   },
   /*{

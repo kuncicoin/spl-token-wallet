@@ -106,7 +106,7 @@ function AddHardwareWalletSplash({ onContinue, onClose }) {
           }}
         >
           <b>
-            Connect your ledger and open the Kucincoin application. When you are
+            Connect your ledger and open the Kuncicoin application. When you are
             ready, click "continue".
           </b>
         </div>

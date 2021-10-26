@@ -75,7 +75,7 @@ export default function NavigationFrame({ children }) {
   const isExtensionWidth = useIsExtensionWidth();
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" style={{ background: '#2c3691' }}>
         {!isExtension && (
           <div
             style={{
@@ -95,7 +95,7 @@ export default function NavigationFrame({ children }) {
         )}
         <Toolbar>
           <Typography variant="h6" className={classes.title} component="h1">
-            {isExtensionWidth ? 'Wallet' : 'Kucincoin SPL Token Wallet'}
+            {isExtensionWidth ? 'Kunciwallet' : 'Kuncicoin SPL Token Wallet'}
           </Typography>
           <NavigationButtons />
         </Toolbar>
@@ -162,7 +162,7 @@ function WalletButton() {
       </Hidden>
       <Hidden xsDown>
         <Button color="inherit" onClick={onClick} className={classes.button}>
-          Wallet
+          Kunciwallet
         </Button>
       </Hidden>
     </>
@@ -460,7 +460,7 @@ function Footer() {
         component="a"
         target="_blank"
         rel="noopener"
-        href="https://github.com/serum-foundation/spl-token-wallet"
+        href="https://github.com/kuncicoin/spl-token-wallet"
         startIcon={<CodeIcon />}
       >
         View Source

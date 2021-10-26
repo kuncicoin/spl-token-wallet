@@ -1,6 +1,6 @@
 # SPL Token Wallet
 
-Example Kucincoin wallet with support for [SPL tokens](https://spl.solana.com/token) and Serum integration.
+Example Kunciwallet with support for [SPL tokens](https://spl.solana.com/token) and Serum integration.
 
 See [sollet.io](https://www.sollet.io) or the [Sollet Chrome Extension](https://chrome.google.com/webstore/detail/sollet/fhmfendgdocmcbmfikdcogofphimnkno) for a demo.
 

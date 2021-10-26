@@ -422,7 +422,7 @@ function ApproveConnectionForm({ origin, onApprove }) {
     <Card>
       <CardContent>
         <Typography variant="h6" component="h1" gutterBottom>
-          Allow this site to access your Kucincoin account?
+          Allow this site to access your Kuncicoin account?
         </Typography>
         <div className={classes.connection}>
           <Typography>{origin}</Typography>
