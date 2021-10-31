@@ -33,11 +33,11 @@ export default function WalletPage() {
         <Grid item xs={12} className={classes.balancesContainer}>
           <BalancesList />
         </Grid>
-        {isProdNetwork ? null : (
+        {/*isProdNetwork ? null : (
           <Grid item xs={12}>
             <DebugButtons />
           </Grid>
-        )}
+        )*/}
       </Grid>
     </Container>
   );
