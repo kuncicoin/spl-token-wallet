@@ -76,7 +76,7 @@ export default function NavigationFrame({ children }) {
   return (
     <>
       <AppBar position="static" style={{ background: '#2c3691' }}>
-        {!isExtension && (
+        {/*!isExtension && (
           <div
             style={{
               textAlign: 'center',
@@ -92,7 +92,7 @@ export default function NavigationFrame({ children }) {
               services.
             </Typography>
           </div>
-        )}
+          )*/}
         <Toolbar>
           <Typography variant="h6" className={classes.title} component="h1">
             {isExtensionWidth ? 'Kunciwallet' : 'Kuncicoin SPL Token Wallet'}
