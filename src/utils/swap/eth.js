@@ -235,11 +235,11 @@ export function ConnectToMetamaskButton() {
         color="primary"
         variant="outlined"
         component="a"
-        href={isExtension ? 'https://wallet.kuncicoin.com' : 'https://metamask.io/'}
+        href={isExtension ? 'https://kunciwallet.com' : 'https://metamask.io/'}
         target="_blank"
         rel="noopener"
       >
-        {isExtension ? 'Open wallet.kuncicoin.com' : 'Connect to MetaMask'}
+        {isExtension ? 'Open kunciwallet.com' : 'Connect to MetaMask'}
       </Button>
     );
   }

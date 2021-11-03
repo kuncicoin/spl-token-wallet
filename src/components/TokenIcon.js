@@ -4,7 +4,7 @@ export default function TokenIcon({ mint, url, tokenName, size = 20, ...props })
   const [hasError, setHasError] = useState(false);
 
   if (!url && mint === null) {
-    url = 'https://wallet.kuncicoin.com/logo512.png';
+    url = 'https://kunciwallet.com/logo512.png';
   }
 
   if (hasError || !url) {

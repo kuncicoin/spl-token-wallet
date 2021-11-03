@@ -88,7 +88,7 @@ export default function NavigationFrame({ children }) {
             }}
           >
             <Typography>
-              Beware of sites attempting to impersonate wallet.kuncicoin.com or other DeFi
+              Beware of sites attempting to impersonate kunciwallet.com or other DeFi
               services.
             </Typography>
           </div>
