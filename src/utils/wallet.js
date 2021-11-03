@@ -453,7 +453,7 @@ export function useBalanceInfo(publicKey) {
   if (!mint) {
     return {
       amount: accountInfo?.lamports ?? 0,
-      decimals: 9,
+      decimals: 6,
       mint: null,
       owner: publicKey,
       tokenName: 'KUNCI',
