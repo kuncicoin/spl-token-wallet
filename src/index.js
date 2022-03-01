@@ -1,13 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+// Libraries
+import { render } from 'react-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Components
+import LandingPage from './pages/LandingPage';
+
+render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="/home" element={<LandingPage />} />
+    </Routes>
+  </BrowserRouter>,
   document.getElementById('root'),
 );
 
