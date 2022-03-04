@@ -1,12 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 /* TODO consolidate popup dimensions */
 html,
@@ -18,16 +18,16 @@ body,
 }
 
 /* TODO consolidate popup dimensions */
-@media screen and (max-height: 700px) {
+/* @media screen and (max-height: 700px) {
   html,
   body,
   #root {
     max-height: 600px;
   }
-}
+} */
 
 /* TODO consolidate popup dimensions */
-@media screen and (max-width: 450px) {
+/* @media screen and (max-width: 450px) {
   html,
   body,
   #root {
@@ -35,13 +35,293 @@ body,
   }
   html::-webkit-scrollbar,
   body::-webkit-scrollbar,
-  #root::-webkit-scrollbar { 
-      width: 1px;
-      background: transparent;
+  #root::-webkit-scrollbar {
+    width: 1px;
+    background: transparent;
   }
-}
+} */
 
 #root {
   display: flex;
   flex-direction: column;
+}
+
+.container-parent {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  max-width: 480px;
+  align-self: center;
+}
+
+.container {
+  display: flex;
+  padding: 25px;
+  max-width: 100%;
+  flex-grow: 1;
+  flex-direction: column;
+  background-color: #1a202c;
+  margin: 0;
+}
+
+@media screen and (min-width: 480px) {
+  .container-parent {
+    width: 480px;
+  }
+  .container {
+    width: 480px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container-parent {
+    width: 100%;
+  }
+  .container {
+    width: 100%;
+  }
+}
+
+.header {
+  padding: 15px 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #27303f;
+}
+
+.heading {
+  padding-top: 0;
+  margin-top: 0;
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.sub-heading {
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 0;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0;
+  line-height: 150%;
+}
+
+.text {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.text-brand {
+  padding: 0 10px;
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.textarea {
+  width: 100%;
+  resize: none;
+  color: #fff;
+  font-family: 'Poppins';
+  font-size: 14px;
+  font-weight: 400;
+  border: 0;
+  margin-top: 10px;
+}
+
+.textarea:active {
+  border: 0;
+}
+
+.secret-phrase {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.secret-phrase > p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 0;
+  letter-spacing: 0.003em;
+}
+
+.button {
+  cursor: pointer;
+  height: 40px;
+  padding: 10px 16px;
+  color: white;
+  border: 0;
+  background: linear-gradient(90.58deg, #532bdc 0.3%, #7656e3 100%);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  transition: all 0.2s;
+}
+
+.button:hover {
+  filter: saturate(1.1);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button-outline {
+  cursor: pointer;
+  width: 200px;
+  height: 40px;
+  padding: 10px 16px;
+  border: 1px solid #a692ed;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background: transparent;
+  color: #a692ed;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.button-outline:hover {
+  filter: saturate(1.1);
+  border: 2px solid #a692ed;
+}
+
+.button-outline:active {
+  transform: scale(0.98);
+}
+
+.button-outline-secondary {
+  cursor: pointer;
+  width: 200px;
+  height: 40px;
+  padding: 10px 16px;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background: transparent;
+  color: #cecece;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.button-outline-secondary:hover {
+  filter: saturate(1.1);
+}
+
+.button-outline-secondary:active {
+  transform: scale(0.98);
+}
+
+.button-ghost {
+  cursor: pointer;
+  height: 40px;
+  padding: 10px 0;
+  border: 0;
+  box-sizing: border-box;
+  background: transparent;
+  color: #a692ed;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 600;
+  outline: 0;
+}
+
+.button-ghost:hover {
+  filter: saturate(1.1);
+}
+
+.button-ghost:active {
+  transform: scale(0.98);
+}
+
+.custom-select {
+  width: 100px;
+  height: 28px;
+  background-color: transparent;
+  border: 1px solid #a692ed;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+  color: #a692ed;
+}
+.custom-select:focus {
+  outline: #a692ed;
+}
+
+.custom-input {
+  margin-bottom: 20px;
+  padding: 0 10px;
+  width: 100%;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #fff;
+}
+
+.custom-input:focus {
+  outline: #a692ed;
+}
+
+label {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+  color: #fff;
+}
+
+hr {
+  width: 100%;
+  margin: 10px 0;
+  border-top: 1px solid #858585;
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+ul {
+  padding-left: 1rem;
+}
+ul > li {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+[data-rsbs-root] {
+  --rsbs-overlay-rounded: 20px !important;
+  --rsbs-max-w: 480px !important;
+  --rsbs-ml: auto;
+  --rsbs-mr: auto;
+  --rsbs-bg: #27303f;
+  --rsbs-backdrop-bg: rgba(0, 0, 0, 0.5);
+  --rsbs-handle-bg: #27303f;
+}
+
+.MuiCheckbox-root.Mui-checked {
+  color: #7656e3 !important;
 }

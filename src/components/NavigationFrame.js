@@ -205,7 +205,7 @@ function ConnectionsButton() {
   );
 }
 
-function NetworkSelector() {
+export function NetworkSelector() {
   const { endpoint, setEndpoint } = useConnectionConfig();
   const cluster = useMemo(() => clusterForEndpoint(endpoint), [endpoint]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -222,22 +222,52 @@ function NetworkSelector() {
           setCustomNetworkOpen(false);
         }}
       />
-      <Hidden xsDown>
-        <Button
+      {/* <Hidden xsDown> */}
+      <select
+        className="custom-select"
+        name="networks"
+        id="networks"
+        onChange={(e) =>
+          e.target.value === 'new_endpoint'
+            ? (() => {
+                setCustomNetworkOpen(true);
+                e.target.value = endpoint;
+              })()
+            : setEndpoint(e.target.value)
+        }
+      >
+        {getClusters().map((cluster) => (
+          <option
+            key={cluster.apiUrl}
+            value={cluster.apiUrl}
+            selected={cluster.apiUrl === endpoint}
+          >
+            {cluster.name === 'mainnet-beta-backup'
+              ? 'Mainnet Beta Backup'
+              : cluster.label}
+          </option>
+        ))}
+        <option value="new_endpoint">
+          {customClusterExists()
+            ? 'Edit Custom Endpoint'
+            : 'Add Custom Endpoint'}
+        </option>
+      </select>
+      {/* <Button
           color="inherit"
           onClick={(e) => setAnchorEl(e.target)}
           className={classes.button}
         >
           {cluster?.label ?? 'Network'}
-        </Button>
-      </Hidden>
-      <Hidden smUp>
+        </Button> */}
+      {/* </Hidden> */}
+      {/* <Hidden smUp>
         <Tooltip title="Select Network" arrow>
           <IconButton color="inherit" onClick={(e) => setAnchorEl(e.target)}>
             <SolanaIcon />
           </IconButton>
         </Tooltip>
-      </Hidden>
+      </Hidden> */}
       <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}
@@ -293,10 +323,8 @@ function WalletSelector() {
   } = useWalletSelector();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addAccountOpen, setAddAccountOpen] = useState(false);
-  const [
-    addHardwareWalletDialogOpen,
-    setAddHardwareWalletDialogOpen,
-  ] = useState(false);
+  const [addHardwareWalletDialogOpen, setAddHardwareWalletDialogOpen] =
+    useState(false);
   const [deleteMnemonicOpen, setDeleteMnemonicOpen] = useState(false);
   const [exportMnemonicOpen, setExportMnemonicOpen] = useState(false);
   const classes = useStyles();

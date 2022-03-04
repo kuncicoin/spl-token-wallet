@@ -49,11 +49,9 @@ export default function App() {
   }
 
   let appElement = (
-    <NavigationFrame>
-      <Suspense fallback={<LoadingIndicator />}>
-        <PageContents />
-      </Suspense>
-    </NavigationFrame>
+    <Suspense fallback={<LoadingIndicator />}>
+      <PageContents />
+    </Suspense>
   );
 
   if (isExtension) {
