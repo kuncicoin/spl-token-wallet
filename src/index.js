@@ -7,13 +7,15 @@ import { render } from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Components
-import LandingPage from './pages/LandingPage';
+import LandingPageID from './pages/LandingPage/Id';
+import LandingPageEN from './pages/LandingPage/En';
 
 render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="/home" element={<LandingPage />} />
+      <Route path="/home/id" element={<LandingPageID />} />
+      <Route path="/home/en" element={<LandingPageEN />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root'),

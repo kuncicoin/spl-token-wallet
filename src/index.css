@@ -8,6 +8,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+iframe {
+  z-index: 0 !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 /* CSS RESET */
 * {
   margin: 0;
