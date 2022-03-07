@@ -62,7 +62,7 @@ export default function LoginPage() {
       ) : (
         <>
           {hasLockedMnemonicAndSeed ? (
-            <LoginForm />
+            <LoginForm setRestore={setRestore} />
           ) : (
             <CreateWalletForm setRestore={setRestore} />
           )}
@@ -140,23 +140,23 @@ function SeedWordsForm({ mnemonicAndSeed, goForward, setRestore }) {
         </p>
       </div>
       <hr />
-      <ul>
+      <ul style={{ marginBottom: '20px' }}>
         <li>
           Please write down the following 24 words and keep them in a safe
           place.
         </li>
         <li>
-          You will need these words to restore your wallet if your browser's
-          storage is cleared or your device is damaged or lost.
+          You will need these words to restore your wallet. Kunci Wallet never
+          saved or stored the secret phrase that has given.
         </li>
         <li>Do NOT ever share this phrase to another party.</li>
       </ul>
-      <p className="text">
+      <p className="text" style={{ marginBottom: '20px' }}>
         By default, wallet will use m/44'/501'/0'/0' as the derivation path for
         the main wallet. To use an alternative path, try restoring an existing
         wallet.
       </p>
-      <p style={{ fontSize: '12px' }}>Secret Phrase</p>
+      <p style={{ fontSize: '12px', marginBottom: '10px' }}>Secret Phrase</p>
       {mnemonicAndSeed ? (
         <div className="secret-phrase">
           <p>{mnemonicAndSeed.mnemonic}</p>
@@ -382,14 +382,19 @@ function ChoosePasswordForm({ setRestore, goBack, onSubmit }) {
         <button className="button-ghost" onClick={goBack}>
           Back
         </button>
-        <p className="heading">Set a Password (optional)</p>
-        <p className="text">Create a password to protect your wallet.</p>
+        <p className="heading" style={{ marginBottom: '10px' }}>
+          Set a Password (optional)
+        </p>
+        <p className="text">
+          Create a Password to increase the protection of your wallet.
+        </p>
       </div>
       <hr />
       <label style={{ marginTop: '10px' }} for="new-password">
         New password
       </label>
       <input
+        style={{ marginTop: '2px' }}
         id="new-password"
         className="custom-input"
         placeholder="type password"
@@ -400,6 +405,7 @@ function ChoosePasswordForm({ setRestore, goBack, onSubmit }) {
       />
       <label for="new-password">Confirm password</label>
       <input
+        style={{ marginTop: '2px' }}
         id="re-new-password"
         className="custom-input"
         placeholder="re-type password"
@@ -487,7 +493,7 @@ function ChoosePasswordForm({ setRestore, goBack, onSubmit }) {
   );
 }
 
-function LoginForm() {
+function LoginForm({ setRestore }) {
   const [password, setPassword] = useState('');
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const callAsync = useCallAsync();
@@ -513,8 +519,9 @@ function LoginForm() {
       <div style={{ marginBottom: '20px' }}>
         <p className="heading">Unlock Wallet</p>
       </div>
-      <label for="password">Password</label>
+      <label for="password">Your Password</label>
       <input
+        style={{ marginTop: '2px' }}
         id="password"
         className="custom-input"
         placeholder="type password"
@@ -530,15 +537,29 @@ function LoginForm() {
         }
         label="Keep wallet unlocked"
       />
-      <button
-        className="button"
-        style={{
-          width: '100%',
-        }}
-        onClick={submit}
-      >
-        Unlock
-      </button>
+
+      <section style={{ display: 'flex', gap: '15px' }}>
+        <button
+          className="button-outline"
+          style={{
+            marginTop: '11px',
+            width: '100%',
+          }}
+          onClick={() => setRestore(true)}
+        >
+          Restore Wallet
+        </button>
+        <button
+          className="button"
+          style={{
+            marginTop: '11px',
+            width: '100%',
+          }}
+          onClick={submit}
+        >
+          Unlock
+        </button>
+      </section>
     </>
     // <Card>
     //   <CardContent>

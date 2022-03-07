@@ -322,8 +322,13 @@ body,
 
 .custom-select {
   width: 100px;
-  height: 28px;
-  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  background-image: url('./assets/icons/arrow-select.svg');
+  background-repeat: no-repeat;
+  background-position-x: 90%;
+  background-position-y: 5px;
   border: 1px solid #a692ed;
   box-sizing: border-box;
   border-radius: 8px;
@@ -332,6 +337,7 @@ body,
   font-size: 12px;
   line-height: 150%;
   color: #a692ed;
+  padding: 5px 10px;
 }
 .custom-select:focus {
   outline: #a692ed;
