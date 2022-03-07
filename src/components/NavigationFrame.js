@@ -34,6 +34,7 @@ import { ExportMnemonicDialog } from './ExportAccountDialog.js';
 import {
   isExtension,
   isExtensionPopup,
+  shortenAddress,
   useIsExtensionWidth,
 } from '../utils/utils';
 import ConnectionIcon from './ConnectionIcon';
@@ -43,6 +44,12 @@ import { usePage } from '../utils/page';
 import { MonetizationOn, OpenInNew } from '@material-ui/icons';
 import AddCustomClusterDialog from './AddCustomClusterDialog';
 import logo from '../assets/icons/logo.svg';
+import crossIcon from '../assets/icons/icon-cross.svg';
+import checkCircleIcon from '../assets/icons/icon-check-circle.svg';
+import hardwareIcon from '../assets/icons/icon-hardware.svg';
+import addUserIcon from '../assets/icons/icon-add-user.svg';
+import exportIcon from '../assets/icons/icon-export.svg';
+import logoutIcon from '../assets/icons/icon-logout.svg';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -74,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavigationFrame({ children }) {
   const classes = useStyles();
   const isExtensionWidth = useIsExtensionWidth();
+  const [walletSelectorOpen, setWalletSelectorOpen] = useState(false);
   return (
     <>
       <div className="container-parent">
@@ -82,10 +90,18 @@ export default function NavigationFrame({ children }) {
             <img src={logo} alt="logo" />
             <p className="text-brand">Kunciwallet</p>
           </div>
-          <NavigationButtons />
+          <NavigationButtons
+            walletSelectorOpen={walletSelectorOpen}
+            setWalletSelectorOpen={setWalletSelectorOpen}
+          />
         </div>
-        <div className="container">{children}</div>
+        {walletSelectorOpen ? (
+          <WalletSelector />
+        ) : (
+          <div className="container">{children}</div>
+        )}
       </div>
+
       {/* <AppBar position="static" style={{ background: '#2c3691' }}> */}
       {/*!isExtension && (
           <div
@@ -117,7 +133,7 @@ export default function NavigationFrame({ children }) {
   );
 }
 
-function NavigationButtons() {
+function NavigationButtons({ walletSelectorOpen, setWalletSelectorOpen }) {
   const isExtensionWidth = useIsExtensionWidth();
   const [page] = usePage();
 
@@ -130,8 +146,28 @@ function NavigationButtons() {
     elements = [
       isExtension && <ConnectionsButton />,
       <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-        <NetworkSelector />
-        <WalletSelector />
+        {walletSelectorOpen ? (
+          <div
+            className="avatar"
+            style={{
+              background: 'transparent',
+            }}
+          >
+            <img
+              src={crossIcon}
+              alt="close"
+              onClick={() => setWalletSelectorOpen((prev) => !prev)}
+            />
+          </div>
+        ) : (
+          <>
+            <NetworkSelector />
+            <div
+              className="avatar"
+              onClick={() => setWalletSelectorOpen((prev) => !prev)}
+            ></div>
+          </>
+        )}
       </div>,
     ];
   } else if (page === 'connections') {
@@ -347,6 +383,90 @@ export function WalletSelector() {
   }
   return (
     <>
+      <div className="wallet-selector-container">
+        <div
+          style={{
+            padding: '10px 0px',
+          }}
+        >
+          {accounts.map((account) => (
+            <AccountListItem
+              account={account}
+              classes={classes}
+              setAnchorEl={setAnchorEl}
+              setWalletSelector={setWalletSelector}
+            />
+          ))}
+          {hardwareWalletAccount && (
+            <>
+              <AccountListItem
+                account={hardwareWalletAccount}
+                classes={classes}
+                setAnchorEl={setAnchorEl}
+                setWalletSelector={setWalletSelector}
+              />
+            </>
+          )}
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexGrow: 1,
+            flexDirection: 'column',
+            backgroundColor: '#27303f',
+          }}
+        >
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => setAddHardwareWalletDialogOpen(true)}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <UsbIcon fontSize="small" /> */}
+              <img src={hardwareIcon} alt="Add Hardware Wallet" />
+            </ListItemIcon>
+            Import Hardware Wallet
+          </MenuItem>
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => {
+              setAnchorEl(null);
+              setAddAccountOpen(true);
+            }}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <AddIcon fontSize="small" /> */}
+              <img src={addUserIcon} alt="Add Account" />
+            </ListItemIcon>
+            Add Account
+          </MenuItem>
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => {
+              setAnchorEl(null);
+              setExportMnemonicOpen(true);
+            }}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <ImportExportIcon fontSize="small" /> */}
+              <img src={exportIcon} alt="Export Wallet" />
+            </ListItemIcon>
+            Export Secret Phrase
+          </MenuItem>
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => {
+              setAnchorEl(null);
+              setDeleteMnemonicOpen(true);
+            }}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <ExitToApp fontSize="small" /> */}
+              <img src={logoutIcon} alt="Logout" />
+            </ListItemIcon>
+            Log Out
+          </MenuItem>
+        </div>
+      </div>
       <AddHardwareWalletDialog
         open={addHardwareWalletDialogOpen}
         onClose={() => setAddHardwareWalletDialogOpen(false)}
@@ -393,7 +513,6 @@ export function WalletSelector() {
         open={deleteMnemonicOpen}
         onClose={() => setDeleteMnemonicOpen(false)}
       />
-      <div className="avatar" onClick={(e) => setAnchorEl(e.target)}></div>
       {/* <Hidden xsDown>
         <Button
           color="inherit"
@@ -410,7 +529,7 @@ export function WalletSelector() {
           </IconButton>
         </Tooltip>
       </Hidden> */}
-      <Menu
+      {/* <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={() => setAnchorEl(null)}
@@ -479,7 +598,7 @@ export function WalletSelector() {
           </ListItemIcon>
           {'Delete Mnemonic & Log Out'}
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </>
   );
 }
@@ -513,24 +632,36 @@ function Footer() {
 
 function AccountListItem({ account, classes, setAnchorEl, setWalletSelector }) {
   return (
-    <MenuItem
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '10px 20px',
+      }}
       key={account.address.toBase58()}
       onClick={() => {
         setAnchorEl(null);
         setWalletSelector(account.selector);
       }}
-      selected={account.isSelected}
-      component="div"
     >
-      <ListItemIcon className={classes.menuItemIcon}>
-        {account.isSelected ? <CheckIcon fontSize="small" /> : null}
-      </ListItemIcon>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography>{account.name}</Typography>
-        <Typography color="textSecondary">
-          {account.address.toBase58()}
-        </Typography>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '10px',
+          alignItems: 'center',
+        }}
+      >
+        <div className="avatar" />
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <p style={{ color: '#CECECE', fontSize: '14px' }}>{account.name}</p>
+          <p style={{ color: '#FFF', fontSize: '14px' }}>
+            {shortenAddress(account.address.toBase58())}
+          </p>
+        </div>
       </div>
-    </MenuItem>
+      {account.isSelected ? <img src={checkCircleIcon} alt="check" /> : null}
+    </div>
   );
 }

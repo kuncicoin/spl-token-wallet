@@ -65,6 +65,13 @@ import DomainsList from './DomainsList';
 import refreshIcon from '../assets/icons/icon-refresh.svg';
 import sortIcon from '../assets/icons/icon-sort.svg';
 import copyIcon from '../assets/icons/icon-copy.svg';
+import depositIcon from '../assets/icons/icon-deposit.svg';
+import domainIcon from '../assets/icons/icon-domain.svg';
+import swapIcon from '../assets/icons/icon-swap.svg';
+import migrateIcon from '../assets/icons/icon-migrate.svg';
+import addIcon from '../assets/icons/icon-add.svg';
+import sendIcon from '../assets/icons/icon-send.svg';
+import receiveIcon from '../assets/icons/icon-receive.svg';
 
 const balanceFormat = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 4,
@@ -251,25 +258,78 @@ export default function BalancesList() {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-around',
+            justifyContent: 'space-between',
             gap: '10px',
           }}
         >
-          <button className="button-outline" style={{ maxWidth: '120px' }}>
-            Send
-          </button>
-          <button className="button-outline" style={{ maxWidth: '120px' }}>
-            Receive
-          </button>
+          <div
+            className="button-container"
+            onClick={() => setShowFtxPayDialog(true)}
+          >
+            <div className="button-circle">
+              <img src={depositIcon} alt="deposit" />
+            </div>
+            <p className="text text-center">
+              Deposit
+              <br />
+              Funds
+            </p>
+          </div>
+
+          <div
+            className="button-container"
+            onClick={() => setShowDomains(true)}
+          >
+            <div className="button-circle">
+              <img src={domainIcon} alt="domain" />
+            </div>
+            <p className="text text-center">
+              See
+              <br />
+              Domain
+            </p>
+          </div>
+
           {region.result && !region.result.isRestricted && (
             <SwapButton size={iconSize} />
           )}
+
+          <div
+            className="button-container"
+            onClick={() => setShowMergeAccounts(true)}
+          >
+            <div className="button-circle">
+              <img src={migrateIcon} alt="migrate" />
+            </div>
+            <p className="text text-center">
+              Migrate
+              <br />
+              Tokens
+            </p>
+          </div>
+
+          <div
+            className="button-container"
+            onClick={() => setShowAddTokenDialog(true)}
+          >
+            <div className="button-circle">
+              <img src={addIcon} alt="add" />
+            </div>
+            <p className="text text-center">
+              Add
+              <br />
+              Token
+            </p>
+          </div>
         </div>
+      </div>
+      <hr />
+      <List>
         {balanceListItemsMemo.map((Memoized) => (
           <Memoized />
         ))}
         {loaded ? null : <LoadingIndicator />}
-      </div>
+      </List>
       <div className="floating-button">
         <img
           src={refreshIcon}
@@ -300,11 +360,33 @@ export default function BalancesList() {
                 return;
               default:
                 console.error('invalid sort type', sortAccounts);
-                return;
             }
           }}
         />
       </div>
+      <DomainsList open={showDomains} setOpen={setShowDomains} />
+      <AddTokenDialog
+        open={showAddTokenDialog}
+        onClose={() => setShowAddTokenDialog(false)}
+      />
+      <FtxPayDialog
+        open={showFtxPayDialog}
+        publicKeys={publicKeys}
+        onClose={() => setShowFtxPayDialog(false)}
+      />
+      <EditAccountNameDialog
+        open={showEditAccountNameDialog}
+        onClose={() => setShowEditAccountNameDialog(false)}
+        oldName={selectedAccount ? selectedAccount.name : ''}
+        onEdit={(name) => {
+          setAccountName(selectedAccount.selector, name);
+          setShowEditAccountNameDialog(false);
+        }}
+      />
+      <MergeAccountsDialog
+        open={showMergeAccounts}
+        onClose={() => setShowMergeAccounts(false)}
+      />
       {/* <Paper>
         <AppBar position="static" color="default" elevation={1}>
           <Toolbar>
@@ -625,13 +707,18 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
 
   return (
     <>
-      <ListItem button onClick={() => expandable && setOpen((open) => !open)}>
+      <ListItem
+        button
+        onClick={() => setOpen((open) => !open)}
+        disablePadding={true}
+        disableGutters={true}
+      >
         <ListItemIcon>
           <TokenIcon
             mint={mint}
             tokenName={tokenName}
             url={tokenLogoUri}
-            size={28}
+            size={40}
           />
         </ListItemIcon>
         <div style={{ display: 'flex', flex: 1 }}>
@@ -661,16 +748,15 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
         </div>
         {expandable ? open ? <ExpandLess /> : <ExpandMore /> : <></>}
       </ListItem>
-      {expandable && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <BalanceListItemDetails
-            isAssociatedToken={isAssociatedToken}
-            publicKey={publicKey}
-            serumMarkets={serumMarkets}
-            balanceInfo={balanceInfo}
-          />
-        </Collapse>
-      )}
+
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <BalanceListItemDetails
+          isAssociatedToken={isAssociatedToken}
+          publicKey={publicKey}
+          serumMarkets={serumMarkets}
+          balanceInfo={balanceInfo}
+        />
+      </Collapse>
     </>
   );
 }
@@ -826,34 +912,36 @@ function BalanceListItemDetails({
           open={exportAccDialogOpen}
         />
       )}
-      <div className={classes.itemDetails}>
-        <div className={classes.buttonContainer}>
+      <div style={{ marginTop: '10px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: '10px',
+          }}
+        >
           {!publicKey.equals(owner) && showTokenInfoDialog ? (
-            <Button
-              variant="outlined"
-              color="default"
-              startIcon={<InfoIcon />}
+            <button
+              className="button-outline"
               onClick={() => setTokenInfoDialogOpen(true)}
             >
               Token Info
-            </Button>
+            </button>
           ) : null}
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<ReceiveIcon />}
-            onClick={() => setDepositDialogOpen(true)}
-          >
-            Receive
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<SendIcon />}
+          <button
+            className="button-outline"
             onClick={() => setSendDialogOpen(true)}
           >
-            Send
-          </Button>
+            <img src={sendIcon} alt="receive" />
+            <p>Send</p>
+          </button>
+          <button
+            className="button-outline"
+            onClick={() => setDepositDialogOpen(true)}
+          >
+            <img src={receiveIcon} alt="receive" />
+            <p>Receive</p>
+          </button>
           {localStorage.getItem('warning-close-account') &&
           mint &&
           amount === 0 ? (
@@ -868,7 +956,24 @@ function BalanceListItemDetails({
             </Button>
           ) : null}
         </div>
-        {additionalInfo}
+        {/* {additionalInfo} */}
+        <ul style={{ marginTop: '10px' }}>
+          <li>Token Name: {tokenName ?? 'Unknown'}</li>
+          <li>Token Symbol: {tokenSymbol ?? 'Unknown'}</li>
+          <li>
+            <Link
+              href={
+                `https://kunciscan.com/address/${publicKey.toBase58()}` +
+                urlSuffix
+              }
+              target="_blank"
+              rel="noopener"
+              style={{ color: '#A692ED' }}
+            >
+              View on Kunciscan
+            </Link>
+          </li>
+        </ul>
       </div>
       <SendDialog
         open={sendDialogOpen}

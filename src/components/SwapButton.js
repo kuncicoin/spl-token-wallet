@@ -17,6 +17,7 @@ import { useWallet } from '../utils/wallet';
 import { useConnection } from '../utils/connection';
 import { useIsExtensionWidth } from '../utils/utils';
 import DialogForm from './DialogForm';
+import swapIcon from '../assets/icons/icon-swap.svg';
 
 export default function SwapButton({ size }) {
   const isExtensionWidth = useIsExtensionWidth();
@@ -37,18 +38,20 @@ function SwapButtonDialog({ size }) {
   const provider = new NotifyingProvider(connection, wallet, sendTransaction);
   return (
     <>
-      <Tooltip title="Swap Tokens">
-        <button
-          className="button-outline"
-          style={{ maxWidth: '120px' }}
-          onClick={() => setDialogOpen(true)}
-        >
+      <div className="button-container" onClick={() => setDialogOpen(true)}>
+        <div className="button-circle">
+          <img src={swapIcon} alt="swap" />
+        </div>
+        <p className="text text-center">
           Swap
-        </button>
-        {/* <IconButton size={size} onClick={() => setDialogOpen(true)}>
+          <br />
+          Tokens
+        </p>
+      </div>
+      {/* <IconButton size={size} onClick={() => setDialogOpen(true)}>
           <SwapHoriz />
         </IconButton> */}
-      </Tooltip>
+
       <DialogForm
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
@@ -91,18 +94,20 @@ function SwapButtonPopover({ size }) {
       <PopupState variant="popover">
         {(popupState) => (
           <div>
-            <Tooltip title="Swap Tokens">
-              <button
-                className="button-outline"
-                style={{ maxWidth: '120px' }}
-                {...bindTrigger(popupState)}
-              >
+            <div className="button-container" {...bindTrigger(popupState)}>
+              <div className="button-circle">
+                <img src={swapIcon} alt="swap" />
+              </div>
+              <p className="text text-center">
                 Swap
-              </button>
-              {/* <IconButton {...bindTrigger(popupState)} size={size}>
+                <br />
+                Tokens
+              </p>
+            </div>
+            {/* <IconButton {...bindTrigger(popupState)} size={size}>
                 <SwapHoriz />
               </IconButton> */}
-            </Tooltip>
+
             <Popover
               {...bindPopover(popupState)}
               anchorOrigin={{
