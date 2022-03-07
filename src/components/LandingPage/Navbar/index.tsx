@@ -68,15 +68,17 @@ const Navbar = ({ variant = 'EN' }) => {
         </section>
         <section>
           <p>
-            <Link to="/home">{isEnglish ? 'Home' : 'Beranda'}</Link>
+            <Link to="#">{isEnglish ? 'Home' : 'Beranda'}</Link>
           </p>
-          <p>{isEnglish ? 'Explore' : 'Jelajah'}</p>
+          <p>
+            <a href="#our-value">{isEnglish ? 'Explore' : 'Jelajah'}</a>
+          </p>
           <p>
             <a href="#guidance">{isEnglish ? 'Guidance' : 'Panduan'}</a>
           </p>
-          <p>
+          {/* <p>
             <a href="#partner">{isEnglish ? 'Partner' : 'Mitra'}</a>
-          </p>
+          </p> */}
 
           <LanguageDropdown variant={variant} />
         </section>

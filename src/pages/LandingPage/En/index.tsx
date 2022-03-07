@@ -5,6 +5,39 @@ import Footer from '../../../components/LandingPage/Footer';
 const LandingPage = () => {
   return (
     <div className={styles.landingPage}>
+      {/* Accent */}
+      <img
+        src="/accent/d-accent-1.svg"
+        alt="kunciwallet.com"
+        className={styles.accentDOne}
+      />
+      <img
+        src="/accent/d-accent-2.svg"
+        alt="kunciwallet.com"
+        className={styles.accentDTwo}
+      />
+      <img
+        src="/accent/d-accent-3.svg"
+        alt="kunciwallet.com"
+        className={styles.accentDThree}
+      />
+
+      <img
+        src="/accent/m-accent-1.svg"
+        alt="kunciwallet.com"
+        className={styles.accentMOne}
+      />
+      <img
+        src="/accent/m-accent-2.svg"
+        alt="kunciwallet.com"
+        className={styles.accentMTwo}
+      />
+      <img
+        src="/accent/m-accent-3.svg"
+        alt="kunciwallet.com"
+        className={styles.accentMThree}
+      />
+
       <Navbar />
       <div className={styles.hero}>
         <section>
@@ -25,7 +58,7 @@ const LandingPage = () => {
       </div>
 
       <div className={styles.ourValue}>
-        <section>
+        <section id="our-value">
           <section>
             <h1>Our Value</h1>
             <p>
@@ -111,7 +144,7 @@ const LandingPage = () => {
         </section>
       </div>
 
-      <div className={styles.partners}>
+      {/* <div className={styles.partners}>
         <section id="partner">
           <h1>Our Partner</h1>
 
@@ -121,7 +154,7 @@ const LandingPage = () => {
             <img src="/illustration/solana-logo.svg" alt="solana" />
           </section>
         </section>
-      </div>
+      </div> */}
 
       <Footer variant="EN" />
     </div>
