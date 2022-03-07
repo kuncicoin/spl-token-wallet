@@ -42,7 +42,9 @@ import logo from '../assets/icons/logo.svg';
 import iconFolder from '../assets/icons/icon-folder.svg';
 import iconCross from '../assets/icons/icon-cross.svg';
 import iconWarning from '../assets/icons/icon-warning.svg';
-import { NetworkSelector } from '../components/NavigationFrame';
+import NavigationFrame, {
+  NetworkSelector,
+} from '../components/NavigationFrame';
 
 export default function LoginPage() {
   const isExtensionWidth = useIsExtensionWidth();
@@ -54,28 +56,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="container-parent">
-      <div className="header">
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <img src={logo} alt="logo" />
-          <p className="text-brand">Kunciwallet</p>
-        </div>
-        <NetworkSelector />
-      </div>
-      <div className="container">
-        {restore ? (
-          <RestoreWalletForm goBack={() => setRestore(false)} />
-        ) : (
-          <>
-            {hasLockedMnemonicAndSeed ? (
-              <LoginForm />
-            ) : (
-              <CreateWalletForm setRestore={setRestore} />
-            )}
-          </>
-        )}
-      </div>
-    </div>
+    <NavigationFrame>
+      {restore ? (
+        <RestoreWalletForm goBack={() => setRestore(false)} />
+      ) : (
+        <>
+          {hasLockedMnemonicAndSeed ? (
+            <LoginForm />
+          ) : (
+            <CreateWalletForm setRestore={setRestore} />
+          )}
+        </>
+      )}
+    </NavigationFrame>
   );
 }
 

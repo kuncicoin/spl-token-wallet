@@ -42,6 +42,7 @@ import { useConnectedWallets } from '../utils/connected-wallets';
 import { usePage } from '../utils/page';
 import { MonetizationOn, OpenInNew } from '@material-ui/icons';
 import AddCustomClusterDialog from './AddCustomClusterDialog';
+import logo from '../assets/icons/logo.svg';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -75,8 +76,18 @@ export default function NavigationFrame({ children }) {
   const isExtensionWidth = useIsExtensionWidth();
   return (
     <>
-      <AppBar position="static" style={{ background: '#2c3691' }}>
-        {/*!isExtension && (
+      <div className="container-parent">
+        <div className="header">
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <img src={logo} alt="logo" />
+            <p className="text-brand">Kunciwallet</p>
+          </div>
+          <NavigationButtons />
+        </div>
+        <div className="container">{children}</div>
+      </div>
+      {/* <AppBar position="static" style={{ background: '#2c3691' }}> */}
+      {/*!isExtension && (
           <div
             style={{
               textAlign: 'center',
@@ -93,7 +104,7 @@ export default function NavigationFrame({ children }) {
             </Typography>
           </div>
           )*/}
-        <Toolbar>
+      {/* <Toolbar>
           <Typography variant="h6" className={classes.title} component="h1">
             {isExtensionWidth ? 'Kunciwallet' : 'Kuncicoin SPL Token Wallet'}
           </Typography>
@@ -101,7 +112,7 @@ export default function NavigationFrame({ children }) {
         </Toolbar>
       </AppBar>
       <main className={classes.content}>{children}</main>
-      {!isExtensionWidth && <Footer />}
+      {!isExtensionWidth && <Footer />} */}
     </>
   );
 }
@@ -118,8 +129,10 @@ function NavigationButtons() {
   if (page === 'wallet') {
     elements = [
       isExtension && <ConnectionsButton />,
-      <WalletSelector />,
-      <NetworkSelector />,
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+        <NetworkSelector />
+        <WalletSelector />
+      </div>,
     ];
   } else if (page === 'connections') {
     elements = [<WalletButton />];
@@ -132,7 +145,7 @@ function NavigationButtons() {
   return elements;
 }
 
-function ExpandButton() {
+export function ExpandButton() {
   const onClick = () => {
     window.open(chrome.extension.getURL('index.html'), '_blank');
   };
@@ -146,7 +159,7 @@ function ExpandButton() {
   );
 }
 
-function WalletButton() {
+export function WalletButton() {
   const classes = useStyles();
   const setPage = usePage()[1];
   const onClick = () => setPage('wallet');
@@ -169,7 +182,7 @@ function WalletButton() {
   );
 }
 
-function ConnectionsButton() {
+export function ConnectionsButton() {
   const classes = useStyles();
   const setPage = usePage()[1];
   const onClick = () => setPage('connections');
@@ -268,7 +281,7 @@ export function NetworkSelector() {
           </IconButton>
         </Tooltip>
       </Hidden> */}
-      <Menu
+      {/* <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={() => setAnchorEl(null)}
@@ -307,12 +320,12 @@ export function NetworkSelector() {
             ? 'Edit Custom Endpoint'
             : 'Add Custom Endpoint'}
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </>
   );
 }
 
-function WalletSelector() {
+export function WalletSelector() {
   const {
     accounts,
     derivedAccounts,
@@ -380,7 +393,8 @@ function WalletSelector() {
         open={deleteMnemonicOpen}
         onClose={() => setDeleteMnemonicOpen(false)}
       />
-      <Hidden xsDown>
+      <div className="avatar" onClick={(e) => setAnchorEl(e.target)}></div>
+      {/* <Hidden xsDown>
         <Button
           color="inherit"
           onClick={(e) => setAnchorEl(e.target)}
@@ -395,7 +409,7 @@ function WalletSelector() {
             <AccountIcon />
           </IconButton>
         </Tooltip>
-      </Hidden>
+      </Hidden> */}
       <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}

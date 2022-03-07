@@ -38,9 +38,16 @@ function SwapButtonDialog({ size }) {
   return (
     <>
       <Tooltip title="Swap Tokens">
-        <IconButton size={size} onClick={() => setDialogOpen(true)}>
+        <button
+          className="button-outline"
+          style={{ maxWidth: '120px' }}
+          onClick={() => setDialogOpen(true)}
+        >
+          Swap
+        </button>
+        {/* <IconButton size={size} onClick={() => setDialogOpen(true)}>
           <SwapHoriz />
-        </IconButton>
+        </IconButton> */}
       </Tooltip>
       <DialogForm
         open={dialogOpen}
@@ -83,11 +90,18 @@ function SwapButtonPopover({ size }) {
     tokenList && (
       <PopupState variant="popover">
         {(popupState) => (
-          <div style={{ display: 'flex' }}>
+          <div>
             <Tooltip title="Swap Tokens">
-              <IconButton {...bindTrigger(popupState)} size={size}>
+              <button
+                className="button-outline"
+                style={{ maxWidth: '120px' }}
+                {...bindTrigger(popupState)}
+              >
+                Swap
+              </button>
+              {/* <IconButton {...bindTrigger(popupState)} size={size}>
                 <SwapHoriz />
-              </IconButton>
+              </IconButton> */}
             </Tooltip>
             <Popover
               {...bindPopover(popupState)}
@@ -117,22 +131,14 @@ function SwapButtonPopover({ size }) {
 }
 
 class NotifyingProvider extends Provider {
-  constructor(
-    connection,
-    wallet,
-    sendTransaction,
-  ) {
+  constructor(connection, wallet, sendTransaction) {
     super(connection, wallet, {
       commitment: 'recent',
     });
     this.sendTransaction = sendTransaction;
   }
 
-  async send(
-    tx,
-    signers,
-    opts,
-  ) {
+  async send(tx, signers, opts) {
     return new Promise((onSuccess, onError) => {
       this.sendTransaction(super.send(tx, signers, opts), {
         onSuccess,
@@ -141,10 +147,7 @@ class NotifyingProvider extends Provider {
     });
   }
 
-  async sendAll(
-    txs,
-    opts,
-  ) {
+  async sendAll(txs, opts) {
     return new Promise(async (resolve, onError) => {
       let txSigs = [];
       for (const tx of txs) {
