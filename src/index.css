@@ -229,6 +229,18 @@ body,
   border: 0;
 }
 
+.warning-alert {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 10px;
+  margin: 10px 0;
+  background-color: #f5e5d5;
+  color: #ab6626;
+}
+
 .secret-phrase-cover {
   width: 100%;
   height: 100px;

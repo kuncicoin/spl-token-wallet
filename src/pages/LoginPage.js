@@ -602,21 +602,7 @@ function RestoreWalletForm({ goBack }) {
             </button>
             <p className="heading">Restore Existing Wallet</p>
           </div>
-          <div
-            id="alert"
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '5px',
-              width: '100%',
-              height: '34px',
-              padding: '0 10px',
-              marginTop: '10px',
-              backgroundColor: '#F5E5D5',
-              color: '#AB6626',
-            }}
-          >
+          <div id="alert" className="warning-alert">
             <img src={iconWarning} alt="warning" />
             <p>NOTE: It will delete any existing wallet in this device.</p>
           </div>
