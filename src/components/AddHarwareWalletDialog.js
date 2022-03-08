@@ -14,6 +14,7 @@ import {
 } from '../pages/LoginPage.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useSnackbar } from 'notistack';
+import arrowLeftIcon from '../assets/icons/icon-arrow-left.svg';
 
 const AddHardwareView = {
   Splash: 0,
@@ -25,35 +26,58 @@ export default function AddHardwareWalletDialog({ open, onAdd, onClose }) {
   const [view, setView] = useState(AddHardwareView.Splash);
   const [hardwareAccount, setHardwareAccount] = useState(null);
   return (
-    <DialogForm onClose={onClose} open={open} onEnter={() => {}} fullWidth>
-      {view === AddHardwareView.Splash ? (
-        <AddHardwareWalletSplash
-          onClose={onClose}
-          onContinue={() => setView(AddHardwareView.Accounts)}
-        />
-      ) : view === AddHardwareView.Accounts ? (
-        <LedgerAccounts
-          onContinue={(account) => {
-            setHardwareAccount(account);
-            setView(AddHardwareView.Confirm);
+    // <DialogForm onClose={onClose} open={open} onEnter={() => {}} fullWidth>
+    <div className="container-parent">
+      <div className="header">
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
-          open={open}
-          onClose={onClose}
-        />
-      ) : (
-        <ConfirmHardwareWallet
-          account={hardwareAccount}
-          onDone={() => {
-            onAdd(hardwareAccount);
-            onClose();
-            setView(AddHardwareView.Splash);
-          }}
-          onBack={() => {
-            setView(AddHardwareView.Accounts);
-          }}
-        />
-      )}
-    </DialogForm>
+        >
+          <img
+            style={{ cursor: 'pointer' }}
+            src={arrowLeftIcon}
+            alt="back"
+            onClick={onClose}
+          />
+          <p className="text-brand">Import Hardware Wallet</p>
+          <div />
+        </div>
+      </div>
+      <div className="container">
+        {view === AddHardwareView.Splash ? (
+          <AddHardwareWalletSplash
+            onClose={onClose}
+            onContinue={() => setView(AddHardwareView.Accounts)}
+          />
+        ) : view === AddHardwareView.Accounts ? (
+          <LedgerAccounts
+            onContinue={(account) => {
+              setHardwareAccount(account);
+              setView(AddHardwareView.Confirm);
+            }}
+            open={open}
+            onClose={onClose}
+          />
+        ) : (
+          <ConfirmHardwareWallet
+            account={hardwareAccount}
+            onDone={() => {
+              onAdd(hardwareAccount);
+              onClose();
+              setView(AddHardwareView.Splash);
+            }}
+            onBack={() => {
+              setView(AddHardwareView.Accounts);
+            }}
+          />
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -97,7 +121,50 @@ function ConfirmHardwareWallet({ account, onDone, onBack }) {
 function AddHardwareWalletSplash({ onContinue, onClose }) {
   return (
     <>
-      <DialogTitle>Add hardware wallet</DialogTitle>
+      <p className="text">
+        Connect your ledger and open the Kuncicoin application. When you are
+        ready, click "continue".
+      </p>
+      <div
+        style={{
+          gap: '10px',
+          display: 'flex',
+          width: '100%',
+          marginTop: '20px',
+          justifyContent: 'space-between',
+        }}
+      >
+        <button className="button-outline" onClick={onClose}>
+          Cancel
+        </button>
+        <button
+          className="button"
+          style={{
+            width: '200px',
+          }}
+          onClick={onContinue}
+        >
+          Continue
+        </button>
+      </div>
+      {/* <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <b>
+          Connect your ledger and open the Kuncicoin application. When you are
+          ready, click "continue".
+        </b>
+      </div>
+      <Button color="primary" onClick={onClose}>
+        Cancel
+      </Button>
+      <Button color="primary" onClick={onContinue}>
+        Continue
+      </Button> */}
+      {/* <DialogTitle>Add hardware wallet</DialogTitle>
       <DialogContent style={{ paddingTop: 16 }}>
         <div
           style={{
@@ -118,7 +185,7 @@ function AddHardwareWalletSplash({ onContinue, onClose }) {
         <Button color="primary" onClick={onContinue}>
           Continue
         </Button>
-      </DialogActions>
+      </DialogActions> */}
     </>
   );
 }
@@ -170,12 +237,10 @@ function LedgerAccounts({ onContinue, onClose, open }) {
     }
   }, [dPathMenuItem, enqueueSnackbar, open, onClose]);
   return (
-    <Card elevation={0}>
+    <>
       {accounts === null ? (
         <div style={{ padding: '24px' }}>
-          <Typography align="center">
-            Loading accounts from your hardware wallet
-          </Typography>
+          <p className="text">Loading accounts from your hardware wallet</p>
           <CircularProgress
             style={{
               display: 'block',
@@ -193,6 +258,6 @@ function LedgerAccounts({ onContinue, onClose, open }) {
           dPathMenuItem={dPathMenuItem}
         />
       )}
-    </Card>
+    </>
   );
 }
