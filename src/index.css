@@ -250,6 +250,18 @@ body,
   gap: 20px;
 }
 
+.account-list-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.account-list-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .floating-button {
   position: fixed;
   bottom: 20px;

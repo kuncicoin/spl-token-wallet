@@ -91,6 +91,7 @@ export default function NavigationFrame({ children }) {
   } = useWalletSelector();
   const [addHardwareWalletDialogOpen, setAddHardwareWalletDialogOpen] =
     useState(false);
+  const [addAccountOpen, setAddAccountOpen] = useState(false);
   const [walletSelectorOpen, setWalletSelectorOpen] = useState(false);
 
   if (addHardwareWalletDialogOpen)
@@ -120,6 +121,25 @@ export default function NavigationFrame({ children }) {
       />
     );
 
+  if (addAccountOpen)
+    return (
+      <AddAccountDialog
+        open={addAccountOpen}
+        onClose={() => setAddAccountOpen(false)}
+        onAdd={({ name, importedAccount }) => {
+          addAccount({ name, importedAccount });
+          setWalletSelector({
+            walletIndex: importedAccount ? undefined : derivedAccounts.length,
+            importedPubkey: importedAccount
+              ? importedAccount.publicKey.toString()
+              : undefined,
+            ledger: false,
+          });
+          setAddAccountOpen(false);
+        }}
+      />
+    );
+
   return (
     <>
       <div className="container-parent">
@@ -136,6 +156,7 @@ export default function NavigationFrame({ children }) {
         {walletSelectorOpen ? (
           <WalletSelector
             setAddHardwareWalletDialogOpen={setAddHardwareWalletDialogOpen}
+            setAddAccountOpen={setAddAccountOpen}
           />
         ) : (
           <div className="container">{children}</div>
@@ -401,7 +422,10 @@ export function NetworkSelector() {
   );
 }
 
-export function WalletSelector({ setAddHardwareWalletDialogOpen }) {
+export function WalletSelector({
+  setAddHardwareWalletDialogOpen,
+  setAddAccountOpen,
+}) {
   const {
     accounts,
     derivedAccounts,
@@ -411,7 +435,6 @@ export function WalletSelector({ setAddHardwareWalletDialogOpen }) {
     addAccount,
   } = useWalletSelector();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [addAccountOpen, setAddAccountOpen] = useState(false);
   const [deleteMnemonicOpen, setDeleteMnemonicOpen] = useState(false);
   const [exportMnemonicOpen, setExportMnemonicOpen] = useState(false);
   const classes = useStyles();
@@ -528,7 +551,7 @@ export function WalletSelector({ setAddHardwareWalletDialogOpen }) {
           });
         }}
       /> */}
-      <AddAccountDialog
+      {/* <AddAccountDialog
         open={addAccountOpen}
         onClose={() => setAddAccountOpen(false)}
         onAdd={({ name, importedAccount }) => {
@@ -542,7 +565,7 @@ export function WalletSelector({ setAddHardwareWalletDialogOpen }) {
           });
           setAddAccountOpen(false);
         }}
-      />
+      /> */}
       <ExportMnemonicDialog
         open={exportMnemonicOpen}
         onClose={() => setExportMnemonicOpen(false)}
@@ -671,12 +694,7 @@ function Footer() {
 function AccountListItem({ account, classes, setAnchorEl, setWalletSelector }) {
   return (
     <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '10px 20px',
-      }}
+      className="account-list-item"
       key={account.address.toBase58()}
       onClick={() => {
         setAnchorEl(null);
