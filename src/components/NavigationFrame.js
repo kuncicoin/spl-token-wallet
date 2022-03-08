@@ -92,6 +92,7 @@ export default function NavigationFrame({ children }) {
   const [addHardwareWalletDialogOpen, setAddHardwareWalletDialogOpen] =
     useState(false);
   const [addAccountOpen, setAddAccountOpen] = useState(false);
+  const [exportMnemonicOpen, setExportMnemonicOpen] = useState(false);
   const [walletSelectorOpen, setWalletSelectorOpen] = useState(false);
 
   if (addHardwareWalletDialogOpen)
@@ -140,6 +141,14 @@ export default function NavigationFrame({ children }) {
       />
     );
 
+  if (exportMnemonicOpen)
+    return (
+      <ExportMnemonicDialog
+        open={exportMnemonicOpen}
+        onClose={() => setExportMnemonicOpen(false)}
+      />
+    );
+
   return (
     <>
       <div className="container-parent">
@@ -157,6 +166,7 @@ export default function NavigationFrame({ children }) {
           <WalletSelector
             setAddHardwareWalletDialogOpen={setAddHardwareWalletDialogOpen}
             setAddAccountOpen={setAddAccountOpen}
+            setExportMnemonicOpen={setExportMnemonicOpen}
           />
         ) : (
           <div className="container">{children}</div>
@@ -425,6 +435,7 @@ export function NetworkSelector() {
 export function WalletSelector({
   setAddHardwareWalletDialogOpen,
   setAddAccountOpen,
+  setExportMnemonicOpen,
 }) {
   const {
     accounts,
@@ -436,7 +447,6 @@ export function WalletSelector({
   } = useWalletSelector();
   const [anchorEl, setAnchorEl] = useState(null);
   const [deleteMnemonicOpen, setDeleteMnemonicOpen] = useState(false);
-  const [exportMnemonicOpen, setExportMnemonicOpen] = useState(false);
   const classes = useStyles();
 
   if (accounts.length === 0) {
@@ -566,10 +576,10 @@ export function WalletSelector({
           setAddAccountOpen(false);
         }}
       /> */}
-      <ExportMnemonicDialog
+      {/* <ExportMnemonicDialog
         open={exportMnemonicOpen}
         onClose={() => setExportMnemonicOpen(false)}
-      />
+      /> */}
       <DeleteMnemonicDialog
         open={deleteMnemonicOpen}
         onClose={() => setDeleteMnemonicOpen(false)}
