@@ -324,7 +324,7 @@ export default function BalancesList() {
         </div>
       </div>
       <hr />
-      <List>
+      <List style={{ position: 'static' }}>
         {balanceListItemsMemo.map((Memoized) => (
           <Memoized />
         ))}

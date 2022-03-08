@@ -122,7 +122,7 @@ export default function NavigationFrame({ children }) {
 
   return (
     <>
-      <div className="container-parent">
+      <div className="container-parent" style={{ position: 'relative' }}>
         <div className="header">
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <img src={logo} alt="logo" />
@@ -138,7 +138,9 @@ export default function NavigationFrame({ children }) {
             setAddHardwareWalletDialogOpen={setAddHardwareWalletDialogOpen}
           />
         ) : (
-          <div className="container">{children}</div>
+          <div className="container" style={{ position: 'static' }}>
+            {children}
+          </div>
         )}
       </div>
 

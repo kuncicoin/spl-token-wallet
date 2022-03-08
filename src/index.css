@@ -10,6 +10,7 @@ body {
 
 iframe {
   z-index: 0 !important;
+  display: none;
 }
 
 html {

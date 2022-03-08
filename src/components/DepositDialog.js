@@ -29,8 +29,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { DialogContentText, Tooltip } from '@material-ui/core';
 import { EthFeeEstimate } from './EthFeeEstimate';
+import ReceiveDialog from './ReceiveDialog';
 
-const DISABLED_MINTS = new Set(['ABE7D8RU1eHfCJWzHYZZeymeE8k9nPPXfqge2NQYyKoL']);
+const DISABLED_MINTS = new Set([
+  'ABE7D8RU1eHfCJWzHYZZeymeE8k9nPPXfqge2NQYyKoL',
+]);
 
 export default function DepositDialog({
   open,
@@ -46,7 +49,11 @@ export default function DepositDialog({
   const [tab, setTab] = useState(0);
 
   // SwapInfos to ignore.
-  if (swapInfo && swapInfo.coin && swapInfo.coin.erc20Contract === '0x2b2e04bf86978b45bb2edf54aca876973bdd43c0') {
+  if (
+    swapInfo &&
+    swapInfo.coin &&
+    swapInfo.coin.erc20Contract === '0x2b2e04bf86978b45bb2edf54aca876973bdd43c0'
+  ) {
     swapInfo = null;
   }
 
@@ -79,68 +86,88 @@ export default function DepositDialog({
   const depositAddressStr = displaySolAddress
     ? owner.toBase58()
     : publicKey.toBase58();
+  // return (
+  //   <DialogForm open={open} onClose={onClose} maxWidth="sm" fullWidth>
+  //     <DialogTitle>
+  //       Deposit {tokenName ?? mint.toBase58()}
+  //       {tokenSymbol ? ` (${tokenSymbol})` : null}
+  //       {ethAccount && (
+  //         <div>
+  //           <Typography color="textSecondary" style={{ fontSize: '14px' }}>
+  //             Metamask connected: {ethAccount}
+  //           </Typography>
+  //         </div>
+  //       )}
+  //     </DialogTitle>
+  //     {tabs}
+  //     <DialogContent style={{ paddingTop: 16 }}>
+  //       {tab === 0 ? (
+  //         <>
+  //           {!displaySolAddress && isAssociatedToken === false ? (
+  //             <DialogContentText>
+  //               This address can only be used to receive{' '}
+  //               {tokenSymbol ?? abbreviateAddress(mint)}. Do not send KUNCI to
+  //               this address.
+  //               <br />
+  //               <b style={{ color: 'red' }}>WARNING</b>: You are using a
+  //               deprecated account type. Please migrate your tokens. Ideally,
+  //               create a new wallet. If you send to this address from a poorly
+  //               implemented wallet, you may burn tokens.
+  //             </DialogContentText>
+  //           ) : (
+  //             <DialogContentText>
+  //               This address can be used to receive{' '}
+  //               {tokenSymbol ?? abbreviateAddress(mint)}.
+  //             </DialogContentText>
+  //           )}
+  //           <CopyableDisplay
+  //             value={depositAddressStr}
+  //             label={'Deposit Address'}
+  //             autoFocus
+  //             qrCode
+  //           />
+  //           <DialogContentText variant="body2">
+  //             <Link
+  //               href={
+  //                 `https://kunciscan.com/address/${depositAddressStr}` +
+  //                 urlSuffix
+  //               }
+  //               target="_blank"
+  //               rel="noopener"
+  //             >
+  //               View on Kunciscan
+  //             </Link>
+  //           </DialogContentText>
+  //         </>
+  //       ) : (
+  //         <SolletSwapDepositAddress
+  //           balanceInfo={balanceInfo}
+  //           swapInfo={swapInfo}
+  //           ethAccount={ethAccount}
+  //         />
+  //       )}
+  //     </DialogContent>
+  //     <DialogActions>
+  //       <Button onClick={onClose}>Close</Button>
+  //     </DialogActions>
+  //   </DialogForm>
+  // );
+
   return (
-    <DialogForm open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        Deposit {tokenName ?? mint.toBase58()}
-        {tokenSymbol ? ` (${tokenSymbol})` : null}
-        {ethAccount && (
-          <div>
-            <Typography color="textSecondary" style={{ fontSize: '14px' }}>
-              Metamask connected: {ethAccount}
-            </Typography>
-          </div>
-        )}
-      </DialogTitle>
-      {tabs}
-      <DialogContent style={{ paddingTop: 16 }}>
-        {tab === 0 ? (
-          <>
-            {!displaySolAddress && isAssociatedToken === false ? (
-              <DialogContentText>
-                This address can only be used to receive{' '}
-                {tokenSymbol ?? abbreviateAddress(mint)}. Do not send KUNCI to
-                this address.
-                <br />
-                <b style={{ color: 'red' }}>WARNING</b>: You are using a deprecated account type. Please migrate your tokens. Ideally, create a new wallet. If you send to this address from a poorly implemented wallet, you may burn tokens.
-              </DialogContentText>
-            ) : (
-              <DialogContentText>
-                This address can be used to receive{' '}
-                {tokenSymbol ?? abbreviateAddress(mint)}.
-              </DialogContentText>
-            )}
-            <CopyableDisplay
-              value={depositAddressStr}
-              label={'Deposit Address'}
-              autoFocus
-              qrCode
-            />
-            <DialogContentText variant="body2">
-              <Link
-                href={
-                  `https://kunciscan.com/address/${depositAddressStr}` +
-                  urlSuffix
-                }
-                target="_blank"
-                rel="noopener"
-              >
-                View on Kunciscan
-              </Link>
-            </DialogContentText>
-          </>
-        ) : (
-          <SolletSwapDepositAddress
-            balanceInfo={balanceInfo}
-            swapInfo={swapInfo}
-            ethAccount={ethAccount}
+    <>
+      {open && (
+        <div
+          className="container-parent"
+          style={{ position: 'absolute', top: 0, left: 0, zIndex: 9 }}
+        >
+          <ReceiveDialog
+            onClose={onClose}
+            depositAddressStr={depositAddressStr}
+            urlSuffix={urlSuffix}
           />
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Close</Button>
-      </DialogActions>
-    </DialogForm>
+        </div>
+      )}
+    </>
   );
 }
 
