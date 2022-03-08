@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import Container from '@material-ui/core/Container';
 import BalancesList from '../components/BalancesList';
 // import Grid from '@material-ui/core/Grid';
@@ -6,6 +6,7 @@ import BalancesList from '../components/BalancesList';
 // import DebugButtons from '../components/DebugButtons';
 // import { makeStyles } from '@material-ui/core';
 import NavigationFrame from '../components/NavigationFrame';
+import DomainsList from '../components/DomainsList';
 
 // const useStyles = makeStyles((theme) => ({
 //   container: {
@@ -24,10 +25,15 @@ import NavigationFrame from '../components/NavigationFrame';
 // }));
 
 export default function WalletPage() {
+  const [showDomains, setShowDomains] = useState(false);
+
+  if (showDomains)
+    return <DomainsList open={showDomains} setOpen={setShowDomains} />;
+
   return (
     <>
       <NavigationFrame>
-        <BalancesList />
+        <BalancesList setShowDomains={setShowDomains} />
       </NavigationFrame>
       {/* <Container fixed maxWidth="md" className={classes.container}>
       <Grid container spacing={isExtensionWidth ? 0 : 3}>
