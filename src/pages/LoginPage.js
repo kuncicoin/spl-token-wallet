@@ -279,6 +279,7 @@ function SeedWordsForm({ mnemonicAndSeed, goForward, setRestore }) {
         </CardActions>
       </Card> */}
       <BottomSheet
+        id="register-bottom-sheet"
         style={{ maxWidth: '480px', backgroundColor: '#1a202c' }}
         open={showDialog}
         onDismiss={() => setShowDialog(false)}

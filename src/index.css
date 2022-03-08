@@ -61,6 +61,37 @@ body,
   flex-direction: column;
 }
 
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.wallet-selector-container {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+  flex-grow: 1;
+  flex-direction: column;
+  background-color: #1a202c;
+}
+
 .container-parent {
   display: flex;
   flex-grow: 1;
@@ -78,10 +109,12 @@ body,
   flex-grow: 1;
   flex-direction: column;
   background-color: #1a202c;
-  margin: 0;
 }
 
 @media screen and (min-width: 480px) {
+  .wallet-selector-container {
+    width: 480px;
+  }
   .container-parent {
     width: 480px;
   }
@@ -91,6 +124,9 @@ body,
 }
 
 @media screen and (max-width: 480px) {
+  .wallet-selector-container {
+    width: 100%;
+  }
   .container-parent {
     width: 100%;
   }
@@ -110,6 +146,11 @@ body,
 }
 
 .avatar {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -145,6 +186,10 @@ body,
   font-size: 14px;
   font-weight: 400;
   margin-bottom: 0.5rem;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .text-brand {
@@ -252,10 +297,14 @@ body,
 }
 
 .button-outline {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   cursor: pointer;
   width: 200px;
   height: 40px;
-  padding: 10px 16px;
   border: 1px solid #a692ed;
   border-radius: 8px;
   box-sizing: border-box;
@@ -317,6 +366,32 @@ body,
 }
 
 .button-ghost:active {
+  transform: scale(0.98);
+}
+
+.button-circle {
+  display: flex;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: white;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.button-container:active {
   transform: scale(0.98);
 }
 
@@ -382,6 +457,7 @@ hr {
 }
 
 ul {
+  list-style: disc;
   padding-left: 1rem;
 }
 ul > li {
@@ -389,7 +465,7 @@ ul > li {
   font-weight: 400;
 }
 
-[data-rsbs-root] {
+#register-bottom-sheet[data-rsbs-root] {
   --rsbs-overlay-rounded: 20px !important;
   --rsbs-max-w: 480px !important;
   --rsbs-ml: auto;
