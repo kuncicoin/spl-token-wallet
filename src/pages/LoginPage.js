@@ -126,7 +126,7 @@ function SeedWordsForm({ mnemonicAndSeed, goForward, setRestore }) {
     const url = window.URL.createObjectURL(new Blob([mnemonic]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'sollet.bak');
+    link.setAttribute('download', 'kunci.bak');
     document.body.appendChild(link);
     link.click();
   };
