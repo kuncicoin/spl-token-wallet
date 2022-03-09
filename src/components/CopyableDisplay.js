@@ -8,6 +8,7 @@ import QRCode from 'qrcode.react';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
+import copyIcon2 from '../assets/icons/icon-copy-2.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,23 +42,38 @@ export default function CopyableDisplay({
   };
 
   return (
-    <div className={classes.root}>
-      <TextField
-        inputRef={(ref) => (textareaRef.current = ref)}
-        multiline
-        autoFocus={autoFocus}
-        value={value}
-        readOnly
-        onFocus={(e) => e.currentTarget.select()}
-        className={classes.textArea}
-        fullWidth
-        helperText={helperText}
-        label={label}
-        spellCheck={false}
-      />
-      <IconButton onClick={copyLink}>
-        <CopyIcon />
-      </IconButton>
+    <div
+      className="flex-row"
+      style={{
+        padding: '10px 0px',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid #858585',
+      }}
+    >
+      <div className="flex-column" style={{ width: '100%' }}>
+        <p style={{ fontSize: '10px', color: '#CECECE' }}>{label}</p>
+        <input
+          ref={(ref) => (textareaRef.current = ref)}
+          autoFocus={autoFocus}
+          value={value}
+          readOnly
+          onFocus={(e) => e.currentTarget.select()}
+          helperText={helperText}
+          spellCheck={false}
+          style={{
+            width: '100%',
+            fontSize: '14px',
+            color: '#fff',
+            backgroundColor: 'transparent',
+            border: 'none',
+            outline: 'none',
+          }}
+        />
+      </div>
+      <div onClick={copyLink} className="button-ghost">
+        <img src={copyIcon2} alt="copy" />
+      </div>
       {qrCode ? <Qrcode value={qrCode === true ? value : qrCode} /> : null}
     </div>
   );

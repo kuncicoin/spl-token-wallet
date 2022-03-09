@@ -113,10 +113,13 @@ function fairsIsLoaded(publicKeys) {
   );
 }
 
-export default function BalancesList({ setShowDomains, setShowFtxPayDialog }) {
+export default function BalancesList({
+  setShowDomains,
+  setShowFtxPayDialog,
+  setShowAddTokenDialog,
+}) {
   const wallet = useWallet();
   const [publicKeys, loaded] = useWalletPublicKeys();
-  const [showAddTokenDialog, setShowAddTokenDialog] = useState(false);
   const [showEditAccountNameDialog, setShowEditAccountNameDialog] =
     useState(false);
   const [showMergeAccounts, setShowMergeAccounts] = useState(false);
@@ -360,10 +363,6 @@ export default function BalancesList({ setShowDomains, setShowFtxPayDialog }) {
           }}
         />
       </div>
-      <AddTokenDialog
-        open={showAddTokenDialog}
-        onClose={() => setShowAddTokenDialog(false)}
-      />
       <EditAccountNameDialog
         open={showEditAccountNameDialog}
         onClose={() => setShowEditAccountNameDialog(false)}

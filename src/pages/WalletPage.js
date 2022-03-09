@@ -9,6 +9,7 @@ import NavigationFrame from '../components/NavigationFrame';
 import DomainsList from '../components/DomainsList';
 import FtxPayDialog from '../components/FtxPay/FtxPayDialog';
 import { useWalletPublicKeys } from '../utils/wallet';
+import AddTokenDialog from '../components/AddTokenDialog';
 
 // const useStyles = makeStyles((theme) => ({
 //   container: {
@@ -29,6 +30,7 @@ import { useWalletPublicKeys } from '../utils/wallet';
 export default function WalletPage() {
   const [showDomains, setShowDomains] = useState(false);
   const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
+  const [showAddTokenDialog, setShowAddTokenDialog] = useState(false);
 
   const [publicKeys, loaded] = useWalletPublicKeys();
 
@@ -46,12 +48,23 @@ export default function WalletPage() {
       </NavigationFrame>
     );
 
+  if (showAddTokenDialog)
+    return (
+      <NavigationFrame>
+        <AddTokenDialog
+          open={showAddTokenDialog}
+          onClose={() => setShowAddTokenDialog(false)}
+        />
+      </NavigationFrame>
+    );
+
   return (
     <>
       <NavigationFrame>
         <BalancesList
           setShowDomains={setShowDomains}
           setShowFtxPayDialog={setShowFtxPayDialog}
+          setShowAddTokenDialog={setShowAddTokenDialog}
         />
       </NavigationFrame>
       {/* <Container fixed maxWidth="md" className={classes.container}>
