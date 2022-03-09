@@ -21,6 +21,15 @@
   gap: 40px;
 }
 
+.footer > section > section > p {
+  cursor: pointer;
+  transition: 300ms;
+}
+
+.footer > section > section > p:hover {
+  opacity: 0.7;
+}
+
 .footer p {
   font-weight: 500;
   font-size: 14px;

@@ -7,15 +7,17 @@ import { render } from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Components
-import LandingPageID from './pages/LandingPage/Id';
-import LandingPageEN from './pages/LandingPage/En';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsConditionPage from './pages/TermsConditionPage';
+import LandingPage from './pages/LandingPage';
 
 render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/home/id" element={<LandingPageID />} />
-      <Route path="/home/en" element={<LandingPageEN />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/wallet" element={<App />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/terms-n-condition" element={<TermsConditionPage />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root'),

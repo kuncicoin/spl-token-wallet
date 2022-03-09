@@ -1,15 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
 
 const Background = ({ setIsShowLanguage }) => (
   <div onClick={() => setIsShowLanguage(false)} />
 );
 
-const LanguageDropdown = ({ variant = 'EN' }) => {
+const LanguageDropdown = ({ variant = 'EN', setVariant }) => {
   const [isShowLanguage, setIsShowLanguage] = useState(false);
-  const isEnglish = variant === 'EN';
 
   const languageStyle = {
     borderBottomLeftRadius: isShowLanguage ? 0 : '8px',
@@ -17,7 +14,10 @@ const LanguageDropdown = ({ variant = 'EN' }) => {
     borderBottom: '1px solid #eeeeee',
   };
 
-  let navigate = useNavigate();
+  const onChangeLanguage = (toVariant: string) => {
+    setVariant(toVariant);
+    setIsShowLanguage(false);
+  };
 
   return (
     <section className={styles.language}>
@@ -27,19 +27,21 @@ const LanguageDropdown = ({ variant = 'EN' }) => {
       >
         <img
           src={`/icon/${variant.toLocaleLowerCase()}.svg`}
-          alt={isEnglish ? 'English' : 'Indonesia'}
+          alt={variant === 'EN' ? 'English' : 'Indonesia'}
         />
         <p>{variant}</p>
         <img src="/icon/chevron-down.svg" alt="Select Language" />
       </section>
       {isShowLanguage && (
         <>
-          <section onClick={() => navigate(`/home/${isEnglish ? 'id' : 'en'}`)}>
+          <section
+            onClick={() => onChangeLanguage(variant === 'EN' ? 'ID' : 'EN')}
+          >
             <img
-              src={`/icon/${isEnglish ? 'id' : 'en'}.svg`}
-              alt={isEnglish ? 'Indonesia' : 'English'}
+              src={`/icon/${variant === 'EN' ? 'id' : 'en'}.svg`}
+              alt={variant === 'EN' ? 'Indonesia' : 'English'}
             />
-            <p>{isEnglish ? 'ID' : 'EN'}</p>
+            <p>{variant === 'EN' ? 'ID' : 'EN'}</p>
           </section>
           <Background setIsShowLanguage={setIsShowLanguage} />
         </>
@@ -48,42 +50,86 @@ const LanguageDropdown = ({ variant = 'EN' }) => {
   );
 };
 
-const Navbar = ({ variant = 'EN' }) => {
-  const isEnglish = variant === 'EN';
+const Navbar = ({ variant = 'EN', setVariant }) => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const Menus = () => (
+    <>
+      <p>
+        <a href="#hero">{variant === 'EN' ? 'Home' : 'Beranda'}</a>
+      </p>
+      <p>
+        <a href="#our-value">{variant === 'EN' ? 'Explore' : 'Jelajah'}</a>
+      </p>
+      <p>
+        <a href="#guidance">{variant === 'EN' ? 'Guidance' : 'Panduan'}</a>
+      </p>
+    </>
+  );
+
+  const Dropdown = () => (
+    <>
+      <div
+        className={styles.dropdownBackground}
+        onClick={() => setShowMenu(false)}
+      />
+      <div className={styles.dropdown}>
+        <Menus />
+
+        <section>
+          <img
+            src={`/icon/m-id${variant === 'EN' ? '' : '-on'}.svg`}
+            alt="ID"
+            onClick={() => setVariant('ID')}
+          />
+          <section
+            style={{ borderRight: '1px solid #FFFFFF', height: '20px' }}
+          />
+          <img
+            src={`/icon/m-en${variant === 'EN' ? '-on' : ''}.svg`}
+            alt="EN"
+            onClick={() => setVariant('EN')}
+          />
+        </section>
+      </div>
+    </>
+  );
+
+  const Logo = () => (
+    <section>
+      <img
+        src="/icon/logo-kunci.svg"
+        alt="KunciWallet"
+        className={styles.logoKunci}
+      />
+      <img
+        src="/icon/m-logo-kunci.svg"
+        alt="KunciWallet"
+        className={styles.mLogoKunci}
+      />
+    </section>
+  );
 
   return (
-    <div className={styles.navbar}>
-      <section>
+    <>
+      <div className={styles.navbar}>
         <section>
-          <img
-            src="/icon/logo-kunci.svg"
-            alt="KunciWallet"
-            className={styles.logoKunci}
-          />
-          <img
-            src="/icon/m-logo-kunci.svg"
-            alt="KunciWallet"
-            className={styles.mLogoKunci}
-          />
-        </section>
-        <section>
-          <p>
-            <Link to="#">{isEnglish ? 'Home' : 'Beranda'}</Link>
-          </p>
-          <p>
-            <a href="#our-value">{isEnglish ? 'Explore' : 'Jelajah'}</a>
-          </p>
-          <p>
-            <a href="#guidance">{isEnglish ? 'Guidance' : 'Panduan'}</a>
-          </p>
-          {/* <p>
-            <a href="#partner">{isEnglish ? 'Partner' : 'Mitra'}</a>
-          </p> */}
+          <Logo />
 
-          <LanguageDropdown variant={variant} />
+          <section>
+            <img
+              src={`/icon/${showMenu ? 'close' : 'hamburger'}.svg`}
+              alt="Menu"
+              onClick={() => setShowMenu((c) => !c)}
+            />
+
+            <Menus />
+            <LanguageDropdown variant={variant} setVariant={setVariant} />
+          </section>
         </section>
-      </section>
-    </div>
+      </div>
+      {showMenu && <Dropdown />}
+    </>
   );
 };
 
