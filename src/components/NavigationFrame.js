@@ -93,6 +93,7 @@ export default function NavigationFrame({ children }) {
     useState(false);
   const [addAccountOpen, setAddAccountOpen] = useState(false);
   const [exportMnemonicOpen, setExportMnemonicOpen] = useState(false);
+  const [deleteMnemonicOpen, setDeleteMnemonicOpen] = useState(false);
   const [walletSelectorOpen, setWalletSelectorOpen] = useState(false);
 
   if (addHardwareWalletDialogOpen)
@@ -149,6 +150,15 @@ export default function NavigationFrame({ children }) {
       />
     );
 
+  if (deleteMnemonicOpen)
+    return (
+      <DeleteMnemonicDialog
+        open={deleteMnemonicOpen}
+        onClose={() => setDeleteMnemonicOpen(false)}
+        setExportMnemonicOpen={setExportMnemonicOpen}
+      />
+    );
+
   return (
     <>
       <div className="container-parent" style={{ position: 'relative' }}>
@@ -167,6 +177,7 @@ export default function NavigationFrame({ children }) {
             setAddHardwareWalletDialogOpen={setAddHardwareWalletDialogOpen}
             setAddAccountOpen={setAddAccountOpen}
             setExportMnemonicOpen={setExportMnemonicOpen}
+            setDeleteMnemonicOpen={setDeleteMnemonicOpen}
           />
         ) : (
           <div className="container" style={{ position: 'static' }}>
@@ -209,6 +220,7 @@ export default function NavigationFrame({ children }) {
 function NavigationButtons({ walletSelectorOpen, setWalletSelectorOpen }) {
   const isExtensionWidth = useIsExtensionWidth();
   const [page] = usePage();
+  const { accounts } = useWalletSelector();
 
   if (isExtensionPopup) {
     return null;
@@ -235,10 +247,12 @@ function NavigationButtons({ walletSelectorOpen, setWalletSelectorOpen }) {
         ) : (
           <>
             <NetworkSelector />
-            <div
-              className="avatar"
-              onClick={() => setWalletSelectorOpen((prev) => !prev)}
-            ></div>
+            {accounts.length !== 0 && (
+              <div
+                className="avatar"
+                onClick={() => setWalletSelectorOpen((prev) => !prev)}
+              ></div>
+            )}
           </>
         )}
       </div>,
@@ -438,6 +452,7 @@ export function WalletSelector({
   setAddHardwareWalletDialogOpen,
   setAddAccountOpen,
   setExportMnemonicOpen,
+  setDeleteMnemonicOpen,
 }) {
   const {
     accounts,
@@ -448,12 +463,12 @@ export function WalletSelector({
     addAccount,
   } = useWalletSelector();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [deleteMnemonicOpen, setDeleteMnemonicOpen] = useState(false);
   const classes = useStyles();
 
   if (accounts.length === 0) {
     return null;
   }
+
   return (
     <>
       <div className="wallet-selector-container">
@@ -582,10 +597,10 @@ export function WalletSelector({
         open={exportMnemonicOpen}
         onClose={() => setExportMnemonicOpen(false)}
       /> */}
-      <DeleteMnemonicDialog
+      {/* <DeleteMnemonicDialog
         open={deleteMnemonicOpen}
         onClose={() => setDeleteMnemonicOpen(false)}
-      />
+      /> */}
       {/* <Hidden xsDown>
         <Button
           color="inherit"
