@@ -133,7 +133,7 @@ function SeedWordsForm({ mnemonicAndSeed, goForward, setRestore }) {
 
   return (
     <>
-      <div>
+      <div style={{ paddingTop: '25px' }}>
         <p className="heading">Create Your Wallet</p>
         <p className="text">
           Create a new wallet to connect KunciCoin and SPL token.
@@ -379,7 +379,7 @@ function ChoosePasswordForm({ setRestore, goBack, onSubmit }) {
 
   return (
     <>
-      <div>
+      <div style={{ paddingTop: '25px' }}>
         <button className="button-ghost" onClick={goBack}>
           Back
         </button>
@@ -511,7 +511,7 @@ function LoginForm() {
 
   return (
     <>
-      <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px', marginTop: '25px' }}>
         <p className="heading">Unlock Wallet</p>
       </div>
       <label for="password">Password</label>
@@ -596,7 +596,7 @@ function RestoreWalletForm({ goBack }) {
         />
       ) : (
         <>
-          <div>
+          <div style={{ paddingTop: '25px' }}>
             <button className="button-ghost" onClick={goBack}>
               Back
             </button>
