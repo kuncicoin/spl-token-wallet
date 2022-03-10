@@ -43,7 +43,7 @@ export default function DeleteMnemonicDialog({
             <div />
           </div>
         </div>
-        <div className="container">
+        <div className="container" style={{ paddingTop: '25px' }}>
           <div id="alert" className="warning-alert">
             <img src={iconWarning} alt="warning" />
             <p>

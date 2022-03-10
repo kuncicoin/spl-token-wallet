@@ -7,6 +7,9 @@ import BalancesList from '../components/BalancesList';
 // import { makeStyles } from '@material-ui/core';
 import NavigationFrame from '../components/NavigationFrame';
 import DomainsList from '../components/DomainsList';
+import FtxPayDialog from '../components/FtxPay/FtxPayDialog';
+import { useWalletPublicKeys } from '../utils/wallet';
+import AddTokenDialog from '../components/AddTokenDialog';
 
 // const useStyles = makeStyles((theme) => ({
 //   container: {
@@ -26,14 +29,43 @@ import DomainsList from '../components/DomainsList';
 
 export default function WalletPage() {
   const [showDomains, setShowDomains] = useState(false);
+  const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
+  const [showAddTokenDialog, setShowAddTokenDialog] = useState(false);
+
+  const [publicKeys, loaded] = useWalletPublicKeys();
 
   if (showDomains)
     return <DomainsList open={showDomains} setOpen={setShowDomains} />;
 
+  if (showFtxPayDialog)
+    return (
+      <NavigationFrame>
+        <FtxPayDialog
+          open={showFtxPayDialog}
+          publicKeys={publicKeys}
+          onClose={() => setShowFtxPayDialog(false)}
+        />
+      </NavigationFrame>
+    );
+
+  if (showAddTokenDialog)
+    return (
+      <NavigationFrame>
+        <AddTokenDialog
+          open={showAddTokenDialog}
+          onClose={() => setShowAddTokenDialog(false)}
+        />
+      </NavigationFrame>
+    );
+
   return (
     <>
       <NavigationFrame>
-        <BalancesList setShowDomains={setShowDomains} />
+        <BalancesList
+          setShowDomains={setShowDomains}
+          setShowFtxPayDialog={setShowFtxPayDialog}
+          setShowAddTokenDialog={setShowAddTokenDialog}
+        />
       </NavigationFrame>
       {/* <Container fixed maxWidth="md" className={classes.container}>
       <Grid container spacing={isExtensionWidth ? 0 : 3}>

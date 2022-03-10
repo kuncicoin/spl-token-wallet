@@ -43,7 +43,7 @@ export default function AddAccountDialog({ open, onAdd, onClose }) {
           <div />
         </div>
       </div>
-      <div className="container">
+      <div className="container" style={{ paddingTop: '25px' }}>
         <form onSubmit={() => onAdd({ name, importedAccount })}>
           <p class="text">
             Connect your ledger and open the Kuncicoin application. When you are

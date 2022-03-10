@@ -80,7 +80,7 @@ export function ExportMnemonicDialog({ open, onClose }) {
           <div />
         </div>
       </div>
-      <div className="container">
+      <div className="container" style={{ paddingTop: '25px' }}>
         {isHidden ? (
           <div
             className="secret-phrase-cover"
