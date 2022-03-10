@@ -72,6 +72,7 @@ import migrateIcon from '../assets/icons/icon-migrate.svg';
 import addIcon from '../assets/icons/icon-add.svg';
 import sendIcon from '../assets/icons/icon-send.svg';
 import receiveIcon from '../assets/icons/icon-receive.svg';
+import copy from 'copy-to-clipboard';
 
 const balanceFormat = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 4,
@@ -240,6 +241,7 @@ export default function BalancesList({
                 gap: '10px',
                 cursor: 'pointer',
               }}
+              onClick={() => copy(selectedAccount.address.toBase58())}
             >
               <p>
                 {isExtensionWidth

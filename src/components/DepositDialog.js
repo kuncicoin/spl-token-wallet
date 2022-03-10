@@ -156,16 +156,11 @@ export default function DepositDialog({
   return (
     <>
       {open && (
-        <div
-          className="container-parent"
-          style={{ position: 'absolute', top: 0, left: 0, zIndex: 9 }}
-        >
-          <ReceiveDialog
-            onClose={onClose}
-            depositAddressStr={depositAddressStr}
-            urlSuffix={urlSuffix}
-          />
-        </div>
+        <ReceiveDialog
+          onClose={onClose}
+          depositAddressStr={depositAddressStr}
+          urlSuffix={urlSuffix}
+        />
       )}
     </>
   );

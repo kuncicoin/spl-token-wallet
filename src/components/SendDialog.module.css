@@ -1,0 +1,50 @@
+.containerFull {
+  position: relative;
+  display: flex;
+  padding: 25px;
+  max-width: 100%;
+  flex-grow: 1;
+  flex-direction: column;
+  background-color: #1a202c;
+
+  min-height: calc(100vh - 60px);
+  width: 100%;
+}
+
+.maxAmount {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.maxAmount > p {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: 0.003em;
+  color: #ffffff;
+}
+
+.maxAmount > label {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: 0.003em;
+  color: #a692ed;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.buttons > button {
+  width: auto;
+  flex-grow: 1;
+}
+
+.buttons > button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

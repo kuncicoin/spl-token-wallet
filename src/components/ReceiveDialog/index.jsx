@@ -18,7 +18,10 @@ const ReceiveDialog = ({ onClose, depositAddressStr, urlSuffix }) => {
   };
 
   return (
-    <>
+    <div
+      className="container-parent"
+      style={{ position: 'absolute', top: 0, left: 0, zIndex: 9 }}
+    >
       <div className="header">
         <div
           style={{
@@ -67,7 +70,7 @@ const ReceiveDialog = ({ onClose, depositAddressStr, urlSuffix }) => {
           </a>
         </section>
       </div>
-    </>
+    </div>
   );
 };
 
