@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavigationFrame({ children }) {
+export default function NavigationFrame({ children, noPadding }) {
   const classes = useStyles();
   const isExtensionWidth = useIsExtensionWidth();
   const {
@@ -180,7 +180,13 @@ export default function NavigationFrame({ children }) {
             setDeleteMnemonicOpen={setDeleteMnemonicOpen}
           />
         ) : (
-          <div className="container" style={{ position: 'static' }}>
+          <div
+            className="container"
+            style={{
+              position: 'static',
+              padding: noPadding ? '0px' : '0px 25px',
+            }}
+          >
             {children}
           </div>
         )}

@@ -41,7 +41,7 @@ export default function WalletPage() {
 
   if (showFtxPayDialog)
     return (
-      <NavigationFrame>
+      <NavigationFrame noPadding>
         <FtxPayDialog
           open={showFtxPayDialog}
           publicKeys={publicKeys}
@@ -52,7 +52,7 @@ export default function WalletPage() {
 
   if (showAddTokenDialog)
     return (
-      <NavigationFrame>
+      <NavigationFrame noPadding>
         <AddTokenDialog
           open={showAddTokenDialog}
           onClose={() => setShowAddTokenDialog(false)}
@@ -61,11 +61,7 @@ export default function WalletPage() {
     );
 
   if (showSwapTokenDialog)
-    return (
-      <NavigationFrame>
-        <SwapTokenDialog setShowSwapTokenDialog={setShowSwapTokenDialog} />
-      </NavigationFrame>
-    );
+    return <SwapTokenDialog setShowSwapTokenDialog={setShowSwapTokenDialog} />;
 
   return (
     <>
