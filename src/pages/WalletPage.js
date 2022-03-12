@@ -10,6 +10,7 @@ import DomainsList from '../components/DomainsList';
 import FtxPayDialog from '../components/FtxPay/FtxPayDialog';
 import { useWalletPublicKeys } from '../utils/wallet';
 import AddTokenDialog from '../components/AddTokenDialog';
+import SwapTokenDialog from '../components/SwapTokenDialog';
 
 // const useStyles = makeStyles((theme) => ({
 //   container: {
@@ -31,6 +32,7 @@ export default function WalletPage() {
   const [showDomains, setShowDomains] = useState(false);
   const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
   const [showAddTokenDialog, setShowAddTokenDialog] = useState(false);
+  const [showSwapTokenDialog, setShowSwapTokenDialog] = useState(false);
 
   const [publicKeys, loaded] = useWalletPublicKeys();
 
@@ -58,6 +60,13 @@ export default function WalletPage() {
       </NavigationFrame>
     );
 
+  if (showSwapTokenDialog)
+    return (
+      <NavigationFrame>
+        <SwapTokenDialog setShowSwapTokenDialog={setShowSwapTokenDialog} />
+      </NavigationFrame>
+    );
+
   return (
     <>
       <NavigationFrame>
@@ -65,6 +74,7 @@ export default function WalletPage() {
           setShowDomains={setShowDomains}
           setShowFtxPayDialog={setShowFtxPayDialog}
           setShowAddTokenDialog={setShowAddTokenDialog}
+          setShowSwapTokenDialog={setShowSwapTokenDialog}
         />
       </NavigationFrame>
       {/* <Container fixed maxWidth="md" className={classes.container}>
