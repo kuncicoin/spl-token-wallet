@@ -69,7 +69,14 @@ export default function App() {
 
         <ConnectionProvider>
           <TokenRegistryProvider>
-            <SnackbarProvider maxSnack={5} autoHideDuration={8000}>
+            <SnackbarProvider
+              maxSnack={5}
+              autoHideDuration={8000}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
               <WalletProvider>{appElement}</WalletProvider>
             </SnackbarProvider>
           </TokenRegistryProvider>

@@ -25,6 +25,8 @@ import {
 } from '../utils/tokens';
 import { sleep } from '../utils/utils';
 import { useTokenInfos, getTokenInfo } from '../utils/tokens/names';
+import arrowLeftIcon from '../assets/icons/icon-arrow-left.svg';
+import styles from './MergeAccountsDialog.module.css';
 
 export default function MergeAccountsDialog({ open, onClose }) {
   const [publicKeys] = useWalletPublicKeys();
@@ -151,90 +153,208 @@ export default function MergeAccountsDialog({ open, onClose }) {
   };
   const disabled = mergeCheck.toLowerCase() !== 'migrate';
 
+  // return (
+  //   <Dialog disableBackdropClick={isMerging} open={open} onClose={onClose}>
+  //     {isMerging ? (
+  //       <DialogContent>
+  //         <DialogContentText style={{ marginBottom: 0, textAlign: 'center' }}>
+  //           Merging Accounts
+  //         </DialogContentText>
+  //         <div
+  //           style={{
+  //             display: 'flex',
+  //             justifyContent: 'center',
+  //             padding: '24px',
+  //           }}
+  //         >
+  //           <CircularProgress />
+  //         </div>
+  //       </DialogContent>
+  //     ) : (
+  //       <>
+  //         <DialogTitle>Are you sure you want to migrate tokens?</DialogTitle>
+  //         <DialogContent>
+  //           <DialogContentText>
+  //             <b>WARNING</b>: This action may break apps that depend on your
+  //             existing token accounts.
+  //           </DialogContentText>
+  //           <DialogContentText>
+  //             Migrating sends all tokens to{' '}
+  //             <Link
+  //               href={'https://spl.solana.com/associated-token-account'}
+  //               target="_blank"
+  //               rel="noopener"
+  //             >
+  //               associated token accounts
+  //             </Link>{' '}
+  //             <FingerprintIcon style={{ marginBottom: '-7px' }} />. If
+  //             associated token accounts do not exist, then they will be created.
+  //           </DialogContentText>
+  //           <DialogContentText>
+  //             If migrating fails during a period of high network load, you will
+  //             not have lost your funds. Just recontinue the migration from where you
+  //             left off. If you have a lot of accounts, migrating might take a
+  //             while.
+  //           </DialogContentText>
+  //           <TextField
+  //             label={`Please type "migrate" to confirm`}
+  //             fullWidth
+  //             variant="outlined"
+  //             margin="normal"
+  //             value={mergeCheck}
+  //             onChange={(e) => setMergeCheck(e.target.value.trim())}
+  //           />
+  //         </DialogContent>
+  //         <DialogActions>
+  //           <Button onClick={close} color="primary">
+  //             Cancel
+  //           </Button>
+  //           <Button
+  //             disabled={disabled}
+  //             onClick={() => {
+  //               setIsMerging(true);
+  //               mergeAccounts()
+  //                 .then(() => {
+  //                   enqueueSnackbar('Account migrate complete', {
+  //                     variant: 'success',
+  //                   });
+  //                   setIsMerging(false);
+  //                 })
+  //                 .catch((err) => {
+  //                   enqueueSnackbar(
+  //                     `There was a problem merging your accounts: ${err.toString()}`,
+  //                     { variant: 'error' },
+  //                   );
+  //                   setIsMerging(false);
+  //                 });
+  //             }}
+  //             color="secondary"
+  //             autoFocus
+  //           >
+  //             Migrate
+  //           </Button>
+  //         </DialogActions>
+  //       </>
+  //     )}
+  //   </Dialog>
+  // );
+
   return (
-    <Dialog disableBackdropClick={isMerging} open={open} onClose={onClose}>
+    <div
+      className="container-parent"
+      style={{ position: 'absolute', top: 0, left: 0, zIndex: 9 }}
+    >
+      <div className="header">
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <img
+            style={{ cursor: 'pointer' }}
+            src={arrowLeftIcon}
+            alt="back"
+            onClick={onClose}
+          />
+          <p className="text-brand">Migrate Tokens</p>
+          <div />
+        </div>
+      </div>
       {isMerging ? (
-        <DialogContent>
-          <DialogContentText style={{ marginBottom: 0, textAlign: 'center' }}>
-            Merging Accounts
-          </DialogContentText>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              padding: '24px',
-            }}
-          >
-            <CircularProgress />
-          </div>
-        </DialogContent>
+        <div
+          className={styles.containerFull}
+          style={{ justifyContent: 'center', alignItems: 'center' }}
+        >
+          <CircularProgress />
+        </div>
       ) : (
         <>
-          <DialogTitle>Are you sure you want to migrate tokens?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <b>WARNING</b>: This action may break apps that depend on your
-              existing token accounts.
-            </DialogContentText>
-            <DialogContentText>
+          <div className={styles.containerFull}>
+            <h1>Are you sure you want to migrate tokens?</h1>
+
+            <section className={styles.warning}>
+              <img src="/icon/warning.svg" alt="Warning" />
+              <p>
+                WARNING: This action may break apps that depend on your existing
+                token accounts.
+              </p>
+            </section>
+
+            <p>
               Migrating sends all tokens to{' '}
               <Link
                 href={'https://spl.solana.com/associated-token-account'}
                 target="_blank"
                 rel="noopener"
+                style={{ color: '#A692ED' }}
               >
                 associated token accounts
               </Link>{' '}
-              <FingerprintIcon style={{ marginBottom: '-7px' }} />. If
-              associated token accounts do not exist, then they will be created.
-            </DialogContentText>
-            <DialogContentText>
-              If migrating fails during a period of high network load, you will
-              not have lost your funds. Just recontinue the migration from where you
-              left off. If you have a lot of accounts, migrating might take a
-              while.
-            </DialogContentText>
-            <TextField
-              label={`Please type "migrate" to confirm`}
-              fullWidth
-              variant="outlined"
-              margin="normal"
+            </p>
+            <ul>
+              <li>
+                If associated token accounts do not exist, then they will be
+                created.
+              </li>
+              <li>
+                If migrating fails during a period of high network load, you
+                will not have lost your funds.
+              </li>
+            </ul>
+
+            <p>
+              Just recontinue the migration from where you left off. If you have
+              a lot of accounts, migrating might take a while.
+            </p>
+
+            <input
+              className="secret-phrase textarea"
+              style={{ height: '60px', marginTop: '20px' }}
+              placeholder="Please type “migrate” to confirm"
               value={mergeCheck}
               onChange={(e) => setMergeCheck(e.target.value.trim())}
             />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={close} color="primary">
-              Cancel
-            </Button>
-            <Button
-              disabled={disabled}
-              onClick={() => {
-                setIsMerging(true);
-                mergeAccounts()
-                  .then(() => {
-                    enqueueSnackbar('Account migrate complete', {
-                      variant: 'success',
+
+            <div className={styles.buttons}>
+              <button
+                className="button-outline"
+                type="button"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+
+              <button
+                disabled={disabled}
+                onClick={() => {
+                  setIsMerging(true);
+                  mergeAccounts()
+                    .then(() => {
+                      enqueueSnackbar('Account migrate complete', {
+                        variant: 'success',
+                      });
+                      setIsMerging(false);
+                    })
+                    .catch((err) => {
+                      enqueueSnackbar(
+                        `There was a problem merging your accounts: ${err.toString()}`,
+                        { variant: 'error' },
+                      );
+                      setIsMerging(false);
                     });
-                    setIsMerging(false);
-                  })
-                  .catch((err) => {
-                    enqueueSnackbar(
-                      `There was a problem merging your accounts: ${err.toString()}`,
-                      { variant: 'error' },
-                    );
-                    setIsMerging(false);
-                  });
-              }}
-              color="secondary"
-              autoFocus
-            >
-              Migrate
-            </Button>
-          </DialogActions>
+                }}
+              >
+                Migrate
+              </button>
+            </div>
+          </div>
         </>
       )}
-    </Dialog>
+    </div>
   );
 }
 
