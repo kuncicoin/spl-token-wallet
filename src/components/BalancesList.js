@@ -245,12 +245,8 @@ export default function BalancesList({
               onClick={() => copy(selectedAccount.address.toBase58())}
             >
               <p>
-                {isExtensionWidth
-                  ? ''
-                  : `${
-                      selectedAccount &&
-                      shortenAddress(selectedAccount.address.toBase58())
-                    }`}
+                {selectedAccount &&
+                  shortenAddress(selectedAccount.address.toBase58())}
               </p>
               <img src={copyIcon} alt="copy" />
             </div>
