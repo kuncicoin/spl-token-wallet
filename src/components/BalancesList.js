@@ -118,6 +118,7 @@ export default function BalancesList({
   setShowDomains,
   setShowFtxPayDialog,
   setShowAddTokenDialog,
+  setShowSwapTokenDialog,
 }) {
   const wallet = useWallet();
   const [publicKeys, loaded] = useWalletPublicKeys();
@@ -292,7 +293,19 @@ export default function BalancesList({
           </div>
 
           {region.result && !region.result.isRestricted && (
-            <SwapButton size={iconSize} />
+            <div
+              className="button-container"
+              onClick={() => setShowSwapTokenDialog(true)}
+            >
+              <div className="button-circle">
+                <img src={swapIcon} alt="swap" />
+              </div>
+              <p className="text text-center">
+                Swap
+                <br />
+                Tokens
+              </p>
+            </div>
           )}
 
           <div
@@ -374,10 +387,12 @@ export default function BalancesList({
           setShowEditAccountNameDialog(false);
         }}
       />
-      <MergeAccountsDialog
-        open={showMergeAccounts}
-        onClose={() => setShowMergeAccounts(false)}
-      />
+      {showMergeAccounts && (
+        <MergeAccountsDialog
+          open={showMergeAccounts}
+          onClose={() => setShowMergeAccounts(false)}
+        />
+      )}
       {/* <Paper>
         <AppBar position="static" color="default" elevation={1}>
           <Toolbar>
