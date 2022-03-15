@@ -1,0 +1,56 @@
+.navbar {
+  height: 80px;
+  width: 100%;
+
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.15)
+  );
+  backdrop-filter: blur(150px);
+  /* position: fixed; */
+  /* z-index: 99999; */
+}
+
+.navbar > section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 100%;
+  width: 1180px;
+  margin: 0 auto;
+}
+
+.logoKunci {
+  height: 62px;
+}
+
+.navbar .mLogoKunci {
+  display: none;
+}
+
+.navbar img {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 1024px) {
+  .navbar {
+    height: 48px;
+  }
+
+  .navbar > section {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .navbar .logoKunci {
+    display: none;
+  }
+
+  .navbar .mLogoKunci {
+    height: 24px;
+    display: block;
+  }
+}

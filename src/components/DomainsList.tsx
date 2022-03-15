@@ -33,6 +33,8 @@ import { useConnection } from '../utils/connection';
 import { useWallet } from '../utils/wallet';
 import { refreshCache } from '../utils/fetch-loop';
 import tuple from 'immutable-tuple';
+import arrowLeftIcon from '../assets/icons/icon-arrow-left.svg';
+import generalEmpty from '../assets/illustration/general-empty.svg';
 
 const useStyles = makeStyles((theme) => ({
   address: {
@@ -274,9 +276,14 @@ const DomainsList = () => {
   }
   if (userDomainsLoaded && userDomains?.length === 0) {
     return (
-      <Typography variant="body1" align="center">
-        You don't own any domain
-      </Typography>
+      <div
+        className="flex-column"
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <img src={generalEmpty} alt="empty" />
+        <p className="text-brand">Nothing here</p>
+        <p style={{ color: '#CECECE' }}>No data found, yet</p>
+      </div>
     );
   }
   return (
@@ -305,18 +312,43 @@ const DomainDialog = ({
 }) => {
   const classes = useStyles();
   return (
-    <Modal open={open} onClose={() => setOpen(false)} className={classes.modal}>
-      <Paper className={classes.paper}>
-        <AppBar position="sticky" color="default" elevation={1}>
-          <Toolbar>
-            <Typography variant="h6" style={{ flexGrow: 1 }} component="h2">
-              Your domains
-            </Typography>
-          </Toolbar>
-        </AppBar>
+    <div className="container-parent">
+      <div className="header">
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <img
+            style={{ cursor: 'pointer' }}
+            src={arrowLeftIcon}
+            alt="back"
+            onClick={() => setOpen(false)}
+          />
+          <p className="text-brand">Your Domain</p>
+          <div />
+        </div>
+      </div>
+      <div className="container">
         <DomainsList />
-      </Paper>
-    </Modal>
+      </div>
+    </div>
+    // <Modal open={open} onClose={() => setOpen(false)} className={classes.modal}>
+    //   <Paper className={classes.paper}>
+    //     <AppBar position="sticky" color="default" elevation={1}>
+    //       <Toolbar>
+    //         <Typography variant="h6" style={{ flexGrow: 1 }} component="h2">
+    //           Your domains
+    //         </Typography>
+    //       </Toolbar>
+    //     </AppBar>
+    //     <DomainsList />
+    //   </Paper>
+    // </Modal>
   );
 };
 

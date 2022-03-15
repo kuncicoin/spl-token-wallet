@@ -1,6 +1,6 @@
 {
-  "name": "Sollet",
-  "description": "Solana SPL Token Wallet",
+  "name": "Kunciwallet",
+  "description": "Kuncicoin SPL Token Wallet",
   "version": "0.3.1",
   "browser_action": {
     "default_popup": "index.html",

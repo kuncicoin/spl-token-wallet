@@ -49,11 +49,9 @@ export default function App() {
   }
 
   let appElement = (
-    <NavigationFrame>
-      <Suspense fallback={<LoadingIndicator />}>
-        <PageContents />
-      </Suspense>
-    </NavigationFrame>
+    <Suspense fallback={<LoadingIndicator />}>
+      <PageContents />
+    </Suspense>
   );
 
   if (isExtension) {
@@ -71,7 +69,14 @@ export default function App() {
 
         <ConnectionProvider>
           <TokenRegistryProvider>
-            <SnackbarProvider maxSnack={5} autoHideDuration={8000}>
+            <SnackbarProvider
+              maxSnack={5}
+              autoHideDuration={8000}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
               <WalletProvider>{appElement}</WalletProvider>
             </SnackbarProvider>
           </TokenRegistryProvider>
@@ -86,7 +91,7 @@ function PageContents() {
   const [page] = usePage();
   const [showWalletSuggestion, setShowWalletSuggestion] = useState(true);
   const suggestionKey = 'private-irgnore-wallet-suggestion';
-  const ignoreSuggestion = window.localStorage.getItem(suggestionKey);
+  const ignoreSuggestion = true; //window.localStorage.getItem(suggestionKey);
   if (!wallet) {
     return (
       <>
@@ -140,7 +145,7 @@ function WalletSuggestionDialog({ open, onClose, onIgnore }) {
             {' '}
             open source
           </a>{' '}
-          wallet for advanced users and developers. For the best Solana
+          wallet for advanced users and developers. For the best Kucincoin
           experience and user support, it is recommended to use <b>
             Phantom
           </b>{' '}

@@ -1,0 +1,171 @@
+.hero {
+  width: 100%;
+  height: 830px;
+  background: url('../../../assets/illustration/hero-accent.svg') no-repeat,
+    url('../../../assets/illustration/hero-bg.svg') no-repeat;
+  position: relative;
+  z-index: 999;
+}
+
+.hero > section {
+  padding-top: 80px;
+  width: 1180px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.hero > section > section:first-child {
+  margin-top: 180px;
+
+  width: 630px;
+}
+
+.hero > section > section:first-child > h1 {
+  font-weight: 600;
+  font-size: 55px;
+  line-height: 130%;
+  letter-spacing: 0.003em;
+  color: #ffffff;
+
+  margin-bottom: 20px;
+}
+
+.hero > section > section:first-child > p {
+  font-size: 20px;
+  line-height: 150%;
+  letter-spacing: 0.003em;
+  color: #ffffff;
+  margin-bottom: 50px;
+}
+
+.hero > section > section:first-child > section {
+  width: 240px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  gap: 4px;
+  cursor: pointer;
+  transition: 300ms;
+}
+
+/* .hero > section > section:first-child > section:hover {
+  opacity: 0.7;
+} */
+
+.hero > section > section:first-child > section > p {
+  background: linear-gradient(90.58deg, #532bdc 0.3%, #7656e3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.003em;
+}
+
+.hero > section > section > h1 {
+  font-weight: 600;
+  font-size: 55px;
+  line-height: 130%;
+  letter-spacing: 0.003em;
+  color: #ffffff;
+}
+
+.hero > section > section > p {
+  font-size: 20px;
+  line-height: 150%;
+  letter-spacing: 0.003em;
+  color: #ffffff;
+}
+
+.hero > section > section:last-child {
+  position: absolute;
+  top: 180px;
+  right: 0;
+  display: flex;
+}
+
+.hero > section > section:last-child > img {
+  height: 700px;
+  width: 700px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .hero > section {
+    width: 100%;
+  }
+
+  .hero {
+    background: url('../../../assets/illustration/hero-bg.svg') no-repeat;
+    background-size: cover;
+    height: auto;
+    /* height: 794px; */
+    padding-bottom: 105px;
+  }
+
+  .hero > section {
+    flex-direction: column-reverse;
+    padding: 0 20px;
+    padding-top: 78px;
+  }
+
+  .hero > section > section:first-child {
+    width: auto;
+    margin-top: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero > section > section:first-child > h1 {
+    font-size: 28px;
+    line-height: 150%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .hero > section > section:first-child > p {
+    font-size: 14px;
+    line-height: 140%;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .hero > section > section:first-child > section {
+    width: 100%;
+  }
+
+  .hero > section > section > h1 {
+    font-size: 28px;
+    line-height: 150%;
+    text-align: center;
+  }
+
+  .hero > section > section > p {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 14px;
+    line-height: 140%;
+    text-align: center;
+  }
+
+  .hero > section > section:last-child {
+    position: static;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero > section > section:last-child > img {
+    height: calc(100vw - 40px);
+    width: calc(100vw - 40px);
+
+    object-fit: cover;
+  }
+}

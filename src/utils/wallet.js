@@ -453,11 +453,11 @@ export function useBalanceInfo(publicKey) {
   if (!mint) {
     return {
       amount: accountInfo?.lamports ?? 0,
-      decimals: 9,
+      decimals: 6,
       mint: null,
       owner: publicKey,
-      tokenName: 'SOL',
-      tokenSymbol: 'SOL',
+      tokenName: 'KUNCI',
+      tokenSymbol: 'KUNCI',
       valid: true,
     };
   }

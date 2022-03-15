@@ -1,0 +1,163 @@
+.navbar {
+  height: 80px;
+  width: 100%;
+
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.15)
+  );
+  backdrop-filter: blur(150px);
+  position: fixed;
+  z-index: 99999;
+}
+
+.navbar > section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 100%;
+  width: 1180px;
+  margin: 0 auto;
+}
+
+.navbar > section > section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logoKunci {
+  height: 62px;
+}
+
+.navbar > section > section:last-child {
+  gap: 40px;
+}
+
+.navbar > section > section:last-child > p {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.003em;
+  color: #ffffff;
+}
+
+.navbar .language {
+  display: flex;
+  flex-direction: column;
+
+  height: 40px;
+}
+
+.navbar .language > div {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.navbar .language > section {
+  position: relative;
+  z-index: 99;
+  cursor: pointer;
+  transition: 300ms;
+  gap: 10px;
+  display: flex;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background-color: #fff;
+}
+
+.navbar .language > section:first-child {
+  box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.02);
+}
+
+.navbar .language > section:hover {
+  opacity: 0.7;
+}
+
+.navbar .language > section:nth-child(2) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.navbar .mLogoKunci {
+  display: none;
+}
+
+.navbar > section > section:last-child > img,
+.dropdown {
+  display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .navbar {
+    height: 48px;
+  }
+
+  .navbar > section {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .navbar > section > section:last-child > p,
+  .navbar .logoKunci,
+  .navbar .language {
+    display: none;
+  }
+
+  .navbar > section > section:last-child > img {
+    display: block;
+  }
+
+  .navbar .mLogoKunci {
+    height: 24px;
+    display: block;
+  }
+
+  .dropdown {
+    z-index: 9999999999;
+    top: 48px;
+    position: fixed;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 38px;
+
+    padding-top: 24px;
+    padding-bottom: 10px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(150px);
+  }
+
+  .dropdown p {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: 0.003em;
+    color: #ffffff;
+  }
+
+  .dropdown > section {
+    margin-top: -14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dropdownBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999999999;
+  }
+}

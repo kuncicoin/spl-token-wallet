@@ -1,0 +1,107 @@
+.landingPage {
+  background: #1a202c;
+  position: relative;
+
+  z-index: 9999999;
+}
+
+.landingPage a {
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* 
+.partners {
+  width: 100%;
+}
+
+.partners > section {
+  padding: 150px 0;
+  width: 1180px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 80px;
+}
+
+.partners > section > h1 {
+  width: 100%;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 150%;
+  text-align: center;
+  letter-spacing: 0.003em;
+  color: #ffffff;
+}
+
+.partners > section > section {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: space-between;
+} */
+
+.accentDOne {
+  position: absolute;
+  top: 841px;
+  left: 0;
+}
+
+.accentDTwo {
+  position: absolute;
+  top: 1684px;
+  right: 0;
+}
+
+.accentDThree {
+  position: absolute;
+  top: 2300px;
+  left: 0;
+}
+
+.accentMOne,
+.accentMTwo,
+.accentMThree {
+  display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .accentDOne,
+  .accentDTwo,
+  .accentDThree {
+    display: none;
+  }
+
+  .accentMOne {
+    display: block;
+    position: absolute;
+    top: 420px;
+    left: 0;
+  }
+
+  .accentMTwo {
+    display: block;
+    position: absolute;
+    top: 1854px;
+    right: 0;
+  }
+
+  .accentMThree {
+    display: block;
+    position: absolute;
+    top: 2759px;
+    left: 0;
+  }
+
+  /* .partners {
+    display: none;
+  }
+  .partners > section {
+    width: 100%;
+  } */
+}

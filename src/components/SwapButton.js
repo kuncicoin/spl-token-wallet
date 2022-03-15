@@ -10,13 +10,14 @@ import SwapHoriz from '@material-ui/icons/SwapHoriz';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Swap from '@project-serum/swap-ui';
 import { Provider } from '@project-serum/anchor';
-import { TokenListContainer } from '@solana/spl-token-registry';
+import { TokenListContainer } from '@kunci/spl-token-registry';
 import { useTokenInfos } from '../utils/tokens/names';
 import { useSendTransaction } from '../utils/notifications';
 import { useWallet } from '../utils/wallet';
 import { useConnection } from '../utils/connection';
 import { useIsExtensionWidth } from '../utils/utils';
 import DialogForm from './DialogForm';
+import swapIcon from '../assets/icons/icon-swap.svg';
 
 export default function SwapButton({ size }) {
   const isExtensionWidth = useIsExtensionWidth();
@@ -37,11 +38,20 @@ function SwapButtonDialog({ size }) {
   const provider = new NotifyingProvider(connection, wallet, sendTransaction);
   return (
     <>
-      <Tooltip title="Swap Tokens">
-        <IconButton size={size} onClick={() => setDialogOpen(true)}>
+      <div className="button-container" onClick={() => setDialogOpen(true)}>
+        <div className="button-circle">
+          <img src={swapIcon} alt="swap" />
+        </div>
+        <p className="text text-center">
+          Swap
+          <br />
+          Tokens
+        </p>
+      </div>
+      {/* <IconButton size={size} onClick={() => setDialogOpen(true)}>
           <SwapHoriz />
-        </IconButton>
-      </Tooltip>
+        </IconButton> */}
+
       <DialogForm
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
@@ -83,12 +93,21 @@ function SwapButtonPopover({ size }) {
     tokenList && (
       <PopupState variant="popover">
         {(popupState) => (
-          <div style={{ display: 'flex' }}>
-            <Tooltip title="Swap Tokens">
-              <IconButton {...bindTrigger(popupState)} size={size}>
+          <div>
+            <div className="button-container" {...bindTrigger(popupState)}>
+              <div className="button-circle">
+                <img src={swapIcon} alt="swap" />
+              </div>
+              <p className="text text-center">
+                Swap
+                <br />
+                Tokens
+              </p>
+            </div>
+            {/* <IconButton {...bindTrigger(popupState)} size={size}>
                 <SwapHoriz />
-              </IconButton>
-            </Tooltip>
+              </IconButton> */}
+
             <Popover
               {...bindPopover(popupState)}
               anchorOrigin={{
@@ -117,22 +136,14 @@ function SwapButtonPopover({ size }) {
 }
 
 class NotifyingProvider extends Provider {
-  constructor(
-    connection,
-    wallet,
-    sendTransaction,
-  ) {
+  constructor(connection, wallet, sendTransaction) {
     super(connection, wallet, {
       commitment: 'recent',
     });
     this.sendTransaction = sendTransaction;
   }
 
-  async send(
-    tx,
-    signers,
-    opts,
-  ) {
+  async send(tx, signers, opts) {
     return new Promise((onSuccess, onError) => {
       this.sendTransaction(super.send(tx, signers, opts), {
         onSuccess,
@@ -141,10 +152,7 @@ class NotifyingProvider extends Provider {
     });
   }
 
-  async sendAll(
-    txs,
-    opts,
-  ) {
+  async sendAll(txs, opts) {
     return new Promise(async (resolve, onError) => {
       let txSigs = [];
       for (const tx of txs) {

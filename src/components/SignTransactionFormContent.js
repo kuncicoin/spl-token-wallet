@@ -179,7 +179,7 @@ export default function SignTransactionFormContent({
   const onOpenAddress = (address) => {
     address &&
       window.open(
-        'https://solscan.io/account/' + address + explorerUrlSuffix,
+        'https://kunciscan.com/address/' + address + explorerUrlSuffix,
         '_blank',
       );
   };

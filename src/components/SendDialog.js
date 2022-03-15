@@ -37,6 +37,8 @@ import { parseTokenAccountData } from '../utils/tokens/data';
 import { Switch, Tooltip } from '@material-ui/core';
 import { EthFeeEstimate } from './EthFeeEstimate';
 import { resolveDomainName, resolveTwitterHandle } from '../utils/name-service';
+import arrowLeftIcon from '../assets/icons/icon-arrow-left.svg';
+import styles from './SendDialog.module.css';
 
 const WUSDC_MINT = new PublicKey(
   'BXXkv6z8ykpG1yuvUDPgh732wzVHB69RnB9YgSYh3itW',
@@ -65,7 +67,10 @@ export default function SendDialog({ open, onClose, publicKey, balanceInfo }) {
   );
 
   // SwapInfos to ignore.
-  if (swapCoinInfo && swapCoinInfo.erc20Contract === '0x2b2e04bf86978b45bb2edf54aca876973bdd43c0') {
+  if (
+    swapCoinInfo &&
+    swapCoinInfo.erc20Contract === '0x2b2e04bf86978b45bb2edf54aca876973bdd43c0'
+  ) {
     swapCoinInfo = null;
   }
 
@@ -117,85 +122,183 @@ export default function SendDialog({ open, onClose, publicKey, balanceInfo }) {
     }
   };
 
+  // return (
+  //   <>
+  //     <DialogForm
+  //       open={open}
+  //       onClose={onClose}
+  //       onSubmit={() => onSubmitRef.current()}
+  //       fullWidth
+  //     >
+  //       <DialogTitle>
+  //         Send {tokenName ?? abbreviateAddress(mint)}
+  //         {tokenSymbol ? ` (${tokenSymbol})` : null}
+  //         {ethAccount && (
+  //           <div>
+  //             <Typography color="textSecondary" style={{ fontSize: '14px' }}>
+  //               Metamask connected: {ethAccount}
+  //             </Typography>
+  //           </div>
+  //         )}
+  //       </DialogTitle>
+  //       {swapCoinInfo ? (
+  //         <Tabs
+  //           value={tab}
+  //           variant="fullWidth"
+  //           onChange={(e, value) => setTab(value)}
+  //           textColor="primary"
+  //           indicatorColor="primary"
+  //         >
+  //           {getTabs(mint)}
+  //         </Tabs>
+  //       ) : null}
+  //       {tab === 'spl' ? (
+  //         <SendSplDialog
+  //           onClose={onClose}
+  //           publicKey={publicKey}
+  //           balanceInfo={balanceInfo}
+  //           onSubmitRef={onSubmitRef}
+  //         />
+  //       ) : tab === 'wusdcToSplUsdc' ? (
+  //         <SendSwapDialog
+  //           key={tab}
+  //           onClose={onClose}
+  //           publicKey={publicKey}
+  //           balanceInfo={balanceInfo}
+  //           swapCoinInfo={swapCoinInfo}
+  //           onSubmitRef={onSubmitRef}
+  //           wusdcToSplUsdc
+  //         />
+  //       ) : tab === 'wusdtToSplUsdt' ? (
+  //         <SendSwapDialog
+  //           key={tab}
+  //           onClose={onClose}
+  //           publicKey={publicKey}
+  //           balanceInfo={balanceInfo}
+  //           swapCoinInfo={swapCoinInfo}
+  //           onSubmitRef={onSubmitRef}
+  //           wusdtToSplUsdt
+  //         />
+  //       ) : tab === 'usdcToSplWUsdc' ? (
+  //         <SendSwapDialog
+  //           key={tab}
+  //           onClose={onClose}
+  //           publicKey={publicKey}
+  //           balanceInfo={balanceInfo}
+  //           swapCoinInfo={swapCoinInfo}
+  //           onSubmitRef={onSubmitRef}
+  //           usdcToSplWUsdc
+  //         />
+  //       ) : (
+  //         <SendSwapDialog
+  //           key={tab}
+  //           onClose={onClose}
+  //           publicKey={publicKey}
+  //           balanceInfo={balanceInfo}
+  //           swapCoinInfo={swapCoinInfo}
+  //           ethAccount={ethAccount}
+  //           onSubmitRef={onSubmitRef}
+  //         />
+  //       )}
+  //     </DialogForm>
+  //     {ethAccount &&
+  //     (swapCoinInfo?.blockchain === 'eth' || swapCoinInfo?.erc20Contract) ? (
+  //       <EthWithdrawalCompleter ethAccount={ethAccount} publicKey={publicKey} />
+  //     ) : null}
+  //   </>
+  // );
+
   return (
     <>
-      <DialogForm
-        open={open}
-        onClose={onClose}
-        onSubmit={() => onSubmitRef.current()}
-        fullWidth
-      >
-        <DialogTitle>
-          Send {tokenName ?? abbreviateAddress(mint)}
-          {tokenSymbol ? ` (${tokenSymbol})` : null}
-          {ethAccount && (
-            <div>
-              <Typography color="textSecondary" style={{ fontSize: '14px' }}>
-                Metamask connected: {ethAccount}
-              </Typography>
+      {open && (
+        <form
+          className="container-parent"
+          style={{ position: 'absolute', top: 0, left: 0, zIndex: 9 }}
+          // onClose={onClose}
+          // onSubmit={() => onSubmitRef.current()}
+          // fullWidth
+        >
+          <div className="header">
+            <div
+              style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <img
+                style={{ cursor: 'pointer' }}
+                src={arrowLeftIcon}
+                alt="back"
+                onClick={onClose}
+              />
+              <p className="text-brand">Send Token</p>
+              <div />
             </div>
+          </div>
+          {swapCoinInfo ? (
+            <Tabs
+              value={tab}
+              variant="fullWidth"
+              onChange={(e, value) => setTab(value)}
+              textColor="primary"
+              indicatorColor="primary"
+            >
+              {getTabs(mint)}
+            </Tabs>
+          ) : null}
+          {tab === 'spl' ? (
+            <SendSplDialog
+              onClose={onClose}
+              publicKey={publicKey}
+              balanceInfo={balanceInfo}
+              onSubmitRef={onSubmitRef}
+            />
+          ) : tab === 'wusdcToSplUsdc' ? (
+            <SendSwapDialog
+              key={tab}
+              onClose={onClose}
+              publicKey={publicKey}
+              balanceInfo={balanceInfo}
+              swapCoinInfo={swapCoinInfo}
+              onSubmitRef={onSubmitRef}
+              wusdcToSplUsdc
+            />
+          ) : tab === 'wusdtToSplUsdt' ? (
+            <SendSwapDialog
+              key={tab}
+              onClose={onClose}
+              publicKey={publicKey}
+              balanceInfo={balanceInfo}
+              swapCoinInfo={swapCoinInfo}
+              onSubmitRef={onSubmitRef}
+              wusdtToSplUsdt
+            />
+          ) : tab === 'usdcToSplWUsdc' ? (
+            <SendSwapDialog
+              key={tab}
+              onClose={onClose}
+              publicKey={publicKey}
+              balanceInfo={balanceInfo}
+              swapCoinInfo={swapCoinInfo}
+              onSubmitRef={onSubmitRef}
+              usdcToSplWUsdc
+            />
+          ) : (
+            <SendSwapDialog
+              key={tab}
+              onClose={onClose}
+              publicKey={publicKey}
+              balanceInfo={balanceInfo}
+              swapCoinInfo={swapCoinInfo}
+              ethAccount={ethAccount}
+              onSubmitRef={onSubmitRef}
+            />
           )}
-        </DialogTitle>
-        {swapCoinInfo ? (
-          <Tabs
-            value={tab}
-            variant="fullWidth"
-            onChange={(e, value) => setTab(value)}
-            textColor="primary"
-            indicatorColor="primary"
-          >
-            {getTabs(mint)}
-          </Tabs>
-        ) : null}
-        {tab === 'spl' ? (
-          <SendSplDialog
-            onClose={onClose}
-            publicKey={publicKey}
-            balanceInfo={balanceInfo}
-            onSubmitRef={onSubmitRef}
-          />
-        ) : tab === 'wusdcToSplUsdc' ? (
-          <SendSwapDialog
-            key={tab}
-            onClose={onClose}
-            publicKey={publicKey}
-            balanceInfo={balanceInfo}
-            swapCoinInfo={swapCoinInfo}
-            onSubmitRef={onSubmitRef}
-            wusdcToSplUsdc
-          />
-        ) : tab === 'wusdtToSplUsdt' ? (
-          <SendSwapDialog
-            key={tab}
-            onClose={onClose}
-            publicKey={publicKey}
-            balanceInfo={balanceInfo}
-            swapCoinInfo={swapCoinInfo}
-            onSubmitRef={onSubmitRef}
-            wusdtToSplUsdt
-          />
-        ) : tab === 'usdcToSplWUsdc' ? (
-          <SendSwapDialog
-            key={tab}
-            onClose={onClose}
-            publicKey={publicKey}
-            balanceInfo={balanceInfo}
-            swapCoinInfo={swapCoinInfo}
-            onSubmitRef={onSubmitRef}
-            usdcToSplWUsdc
-          />
-        ) : (
-          <SendSwapDialog
-            key={tab}
-            onClose={onClose}
-            publicKey={publicKey}
-            balanceInfo={balanceInfo}
-            swapCoinInfo={swapCoinInfo}
-            ethAccount={ethAccount}
-            onSubmitRef={onSubmitRef}
-          />
-        )}
-      </DialogForm>
+        </form>
+      )}
       {ethAccount &&
       (swapCoinInfo?.blockchain === 'eth' || swapCoinInfo?.erc20Contract) ? (
         <EthWithdrawalCompleter ethAccount={ethAccount} publicKey={publicKey} />
@@ -207,24 +310,19 @@ export default function SendDialog({ open, onClose, publicKey, balanceInfo }) {
 function SendSplDialog({ onClose, publicKey, balanceInfo, onSubmitRef }) {
   const defaultAddressHelperText =
     !balanceInfo.mint || balanceInfo.mint.equals(WRAPPED_SOL_MINT)
-      ? 'Enter Solana Address'
-      : 'Enter SPL token or Solana address';
+      ? 'Enter Kuncicoin Address'
+      : 'Enter SPL token or Kuncicoin address';
   const wallet = useWallet();
   const [sendTransaction, sending] = useSendTransaction();
   const [addressHelperText, setAddressHelperText] = useState(
     defaultAddressHelperText,
   );
   const [passValidation, setPassValidation] = useState();
-  const [overrideDestinationCheck, setOverrideDestinationCheck] = useState(
-    false,
-  );
+  const [overrideDestinationCheck, setOverrideDestinationCheck] =
+    useState(false);
   const [shouldShowOverride, setShouldShowOverride] = useState();
-  let {
-    fields,
-    destinationAddress,
-    transferAmountString,
-    validAmount,
-  } = useForm(balanceInfo, addressHelperText, passValidation);
+  let { fields, destinationAddress, transferAmountString, validAmount } =
+    useForm(balanceInfo, addressHelperText, passValidation);
   const { decimals, mint } = balanceInfo;
   const mintString = mint && mint.toBase58();
   const [isDomainName, setIsDomainName] = useState(false);
@@ -286,7 +384,7 @@ function SendSplDialog({ onClose, publicKey, balanceInfo, onSubmitRef }) {
         } else {
           setPassValidation(true);
           setAddressHelperText(
-            `Destination is a Solana address: ${
+            `Destination is a Kuncicoin address: ${
               isDomainName ? domainOwner : destinationAddress
             }`,
           );
@@ -329,31 +427,48 @@ function SendSplDialog({ onClose, publicKey, balanceInfo, onSubmitRef }) {
     return sendTransaction(makeTransaction(), { onSuccess: onClose });
   }
   onSubmitRef.current = onSubmit;
+  // return (
+  //   <>
+  //     <DialogContent>{fields}</DialogContent>
+  //     <DialogActions>
+  //       {shouldShowOverride && (
+  //         <div
+  //           style={{
+  //             'align-items': 'center',
+  //             display: 'flex',
+  //             'text-align': 'left',
+  //           }}
+  //         >
+  //           <b>This address has no funds. Are you sure it's correct?</b>
+  //           <Switch
+  //             checked={overrideDestinationCheck}
+  //             onChange={(e) => setOverrideDestinationCheck(e.target.checked)}
+  //             color="primary"
+  //           />
+  //         </div>
+  //       )}
+  //       <Button onClick={onClose}>Cancel</Button>
+  //       <Button type="submit" color="primary" disabled={disabled}>
+  //         Send
+  //       </Button>
+  //     </DialogActions>
+  //   </>
+  // );
+
   return (
     <>
-      <DialogContent>{fields}</DialogContent>
-      <DialogActions>
-        {shouldShowOverride && (
-          <div
-            style={{
-              'align-items': 'center',
-              display: 'flex',
-              'text-align': 'left',
-            }}
-          >
-            <b>This address has no funds. Are you sure it's correct?</b>
-            <Switch
-              checked={overrideDestinationCheck}
-              onChange={(e) => setOverrideDestinationCheck(e.target.checked)}
-              color="primary"
-            />
-          </div>
-        )}
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" color="primary" disabled={disabled}>
-          Send
-        </Button>
-      </DialogActions>
+      <div className={styles.containerFull}>
+        {fields}
+
+        <div className={styles.buttons} style={{ marginTop: '20px' }}>
+          <button className="button-outline" type="button" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="button" type="submit" disabled={disabled}>
+            Send
+          </button>
+        </div>
+      </div>
     </>
   );
 }
@@ -658,10 +773,10 @@ function useForm(
 
   const fields = (
     <>
-      <TextField
+      {/* <TextField
         label="Recipient Address"
         fullWidth
-        variant="outlined"
+        variant="standard"
         margin="normal"
         value={destinationAddress}
         onChange={(e) => setDestinationAddress(e.target.value.trim())}
@@ -672,7 +787,22 @@ function useForm(
             : undefined
         }
         error={!passAddressValidation && passAddressValidation !== undefined}
+      /> */}
+      <label>Recipient Address</label>
+      <input
+        style={{ marginTop: '2px', marginBottom: '20px' }}
+        className="custom-input"
+        placeholder="Enter Kunci coin address"
+        value={destinationAddress}
+        onChange={(e) => setDestinationAddress(e.target.value.trim())}
+        id={
+          !passAddressValidation && passAddressValidation !== undefined
+            ? 'outlined-error-helper-text'
+            : undefined
+        }
       />
+      {/* ========================== */}
+      {/* 
       <TextField
         label="Amount"
         fullWidth
@@ -711,7 +841,30 @@ function useForm(
             Max: {balanceAmountToUserAmount(balanceAmount, decimals)}
           </span>
         }
+      /> */}
+
+      <label>Coin Amount</label>
+      <input
+        style={{ marginTop: '2px', marginBottom: '20px' }}
+        className="custom-input"
+        placeholder="0 KUNCI"
+        type="number"
+        value={transferAmountString}
+        onChange={(e) => setTransferAmountString(e.target.value.trim())}
       />
+      <div className={styles.maxAmount}>
+        <p>Total: {balanceAmountToUserAmount(balanceAmount, decimals)}</p>
+
+        <label
+          onClick={() =>
+            setTransferAmountString(
+              balanceAmountToUserAmount(balanceAmount, decimals),
+            )
+          }
+        >
+          All coins
+        </label>
+      </div>
     </>
   );
 

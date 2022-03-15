@@ -9,6 +9,9 @@ import Switch from '@material-ui/core/Switch';
 import DialogForm from './DialogForm';
 import { useWallet } from '../utils/wallet';
 import { useUnlockedMnemonicAndSeed } from '../utils/wallet-seed';
+import iconFolder from '../assets/icons/icon-folder.svg';
+import arrowLeftIcon from '../assets/icons/icon-arrow-left.svg';
+import padlockIcon from '../assets/icons/icon-padlock.svg';
 
 export default function ExportAccountDialog({ open, onClose }) {
   const wallet = useWallet();
@@ -46,31 +49,86 @@ export default function ExportAccountDialog({ open, onClose }) {
 export function ExportMnemonicDialog({ open, onClose }) {
   const [isHidden, setIsHidden] = useState(true);
   const [mnemKey] = useUnlockedMnemonicAndSeed();
+
+  const downloadMnemonic = (mnemonic) => {
+    const url = window.URL.createObjectURL(new Blob([mnemonic]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'kunci.bak');
+    document.body.appendChild(link);
+    link.click();
+  };
   return (
-    <DialogForm open={open} onClose={onClose} fullWidth>
-      <DialogTitle>Export mnemonic</DialogTitle>
-      <DialogContent>
-        <TextField
-          label="Mnemonic"
-          fullWidth
-          type={isHidden && 'password'}
-          variant="outlined"
-          margin="normal"
-          value={mnemKey.mnemonic}
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={!isHidden}
-              onChange={() => setIsHidden(!isHidden)}
-            />
-          }
-          label="Reveal"
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Close</Button>
-      </DialogActions>
-    </DialogForm>
+    <div className="container-parent">
+      <div className="header">
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <img
+            style={{ cursor: 'pointer' }}
+            src={arrowLeftIcon}
+            alt="back"
+            onClick={onClose}
+          />
+          <p className="text-brand">Export Secret Phrase</p>
+          <div />
+        </div>
+      </div>
+      <div className="container" style={{ paddingTop: '25px' }}>
+        {isHidden ? (
+          <div
+            className="secret-phrase-cover"
+            onClick={() => setIsHidden(false)}
+          >
+            <img src={padlockIcon} alt="padlock" />
+            <p>Tap to reveal the secret phrase</p>
+          </div>
+        ) : (
+          <div className="secret-phrase">
+            <p>{mnemKey.mnemonic}</p>
+          </div>
+        )}
+
+        <button
+          className="button"
+          style={{ marginTop: '20px', opacity: isHidden ? 0.5 : 1 }}
+          disabled={isHidden}
+          onClick={() => downloadMnemonic(mnemKey.mnemonic)}
+        >
+          <img src={iconFolder} alt="icon" /> Export
+        </button>
+      </div>
+    </div>
+    // <DialogForm open={open} onClose={onClose} fullWidth>
+    //   <DialogTitle>Export mnemonic</DialogTitle>
+    //   <DialogContent>
+    //     <TextField
+    //       label="Mnemonic"
+    //       fullWidth
+    //       type={isHidden && 'password'}
+    //       variant="outlined"
+    //       margin="normal"
+    //       value={mnemKey.mnemonic}
+    //     />
+    //     <FormControlLabel
+    //       control={
+    //         <Switch
+    //           checked={!isHidden}
+    //           onChange={() => setIsHidden(!isHidden)}
+    //         />
+    //       }
+    //       label="Reveal"
+    //     />
+    //   </DialogContent>
+    //   <DialogActions>
+    //     <Button onClick={onClose}>Close</Button>
+    //   </DialogActions>
+    // </DialogForm>
   );
 }

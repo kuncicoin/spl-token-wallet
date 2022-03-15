@@ -34,6 +34,7 @@ import { ExportMnemonicDialog } from './ExportAccountDialog.js';
 import {
   isExtension,
   isExtensionPopup,
+  shortenAddress,
   useIsExtensionWidth,
 } from '../utils/utils';
 import ConnectionIcon from './ConnectionIcon';
@@ -42,6 +43,13 @@ import { useConnectedWallets } from '../utils/connected-wallets';
 import { usePage } from '../utils/page';
 import { MonetizationOn, OpenInNew } from '@material-ui/icons';
 import AddCustomClusterDialog from './AddCustomClusterDialog';
+import logo from '../assets/icons/logo.svg';
+import crossIcon from '../assets/icons/icon-cross.svg';
+import checkCircleIcon from '../assets/icons/icon-check-circle.svg';
+import hardwareIcon from '../assets/icons/icon-hardware.svg';
+import addUserIcon from '../assets/icons/icon-add-user.svg';
+import exportIcon from '../assets/icons/icon-export.svg';
+import logoutIcon from '../assets/icons/icon-logout.svg';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -70,13 +78,122 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavigationFrame({ children }) {
+export default function NavigationFrame({ children, noPadding }) {
   const classes = useStyles();
   const isExtensionWidth = useIsExtensionWidth();
+  const {
+    accounts,
+    derivedAccounts,
+    hardwareWalletAccount,
+    setHardwareWalletAccount,
+    setWalletSelector,
+    addAccount,
+  } = useWalletSelector();
+  const [addHardwareWalletDialogOpen, setAddHardwareWalletDialogOpen] =
+    useState(false);
+  const [addAccountOpen, setAddAccountOpen] = useState(false);
+  const [exportMnemonicOpen, setExportMnemonicOpen] = useState(false);
+  const [deleteMnemonicOpen, setDeleteMnemonicOpen] = useState(false);
+  const [walletSelectorOpen, setWalletSelectorOpen] = useState(false);
+
+  if (addHardwareWalletDialogOpen)
+    return (
+      <AddHardwareWalletDialog
+        open={addHardwareWalletDialogOpen}
+        onClose={() => setAddHardwareWalletDialogOpen(false)}
+        onAdd={({ publicKey, derivationPath, account, change }) => {
+          setHardwareWalletAccount({
+            name: 'Hardware wallet',
+            publicKey,
+            importedAccount: publicKey.toString(),
+            ledger: true,
+            derivationPath,
+            account,
+            change,
+          });
+          setWalletSelector({
+            walletIndex: undefined,
+            importedPubkey: publicKey.toString(),
+            ledger: true,
+            derivationPath,
+            account,
+            change,
+          });
+        }}
+      />
+    );
+
+  if (addAccountOpen)
+    return (
+      <AddAccountDialog
+        open={addAccountOpen}
+        onClose={() => setAddAccountOpen(false)}
+        onAdd={({ name, importedAccount }) => {
+          addAccount({ name, importedAccount });
+          setWalletSelector({
+            walletIndex: importedAccount ? undefined : derivedAccounts.length,
+            importedPubkey: importedAccount
+              ? importedAccount.publicKey.toString()
+              : undefined,
+            ledger: false,
+          });
+          setAddAccountOpen(false);
+        }}
+      />
+    );
+
+  if (exportMnemonicOpen)
+    return (
+      <ExportMnemonicDialog
+        open={exportMnemonicOpen}
+        onClose={() => setExportMnemonicOpen(false)}
+      />
+    );
+
+  if (deleteMnemonicOpen)
+    return (
+      <DeleteMnemonicDialog
+        open={deleteMnemonicOpen}
+        onClose={() => setDeleteMnemonicOpen(false)}
+        setExportMnemonicOpen={setExportMnemonicOpen}
+      />
+    );
+
   return (
     <>
-      <AppBar position="static">
-        {!isExtension && (
+      <div className="container-parent" style={{ position: 'relative' }}>
+        <div className="header">
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <img src={logo} alt="logo" />
+            <p className="text-brand">Kunciwallet</p>
+          </div>
+          <NavigationButtons
+            walletSelectorOpen={walletSelectorOpen}
+            setWalletSelectorOpen={setWalletSelectorOpen}
+          />
+        </div>
+        {walletSelectorOpen ? (
+          <WalletSelector
+            setAddHardwareWalletDialogOpen={setAddHardwareWalletDialogOpen}
+            setAddAccountOpen={setAddAccountOpen}
+            setExportMnemonicOpen={setExportMnemonicOpen}
+            setDeleteMnemonicOpen={setDeleteMnemonicOpen}
+          />
+        ) : (
+          <div
+            className="container"
+            style={{
+              position: 'static',
+              padding: noPadding ? '0px' : '0px 25px',
+            }}
+          >
+            {children}
+          </div>
+        )}
+      </div>
+
+      {/* <AppBar position="static" style={{ background: '#2c3691' }}> */}
+      {/*!isExtension && (
           <div
             style={{
               textAlign: 'center',
@@ -88,27 +205,28 @@ export default function NavigationFrame({ children }) {
             }}
           >
             <Typography>
-              Beware of sites attempting to impersonate sollet.io or other DeFi
+              Beware of sites attempting to impersonate kunciwallet.com or other DeFi
               services.
             </Typography>
           </div>
-        )}
-        <Toolbar>
+          )*/}
+      {/* <Toolbar>
           <Typography variant="h6" className={classes.title} component="h1">
-            {isExtensionWidth ? 'Sollet' : 'Solana SPL Token Wallet'}
+            {isExtensionWidth ? 'Kunciwallet' : 'Kuncicoin SPL Token Wallet'}
           </Typography>
           <NavigationButtons />
         </Toolbar>
       </AppBar>
       <main className={classes.content}>{children}</main>
-      {!isExtensionWidth && <Footer />}
+      {!isExtensionWidth && <Footer />} */}
     </>
   );
 }
 
-function NavigationButtons() {
+function NavigationButtons({ walletSelectorOpen, setWalletSelectorOpen }) {
   const isExtensionWidth = useIsExtensionWidth();
   const [page] = usePage();
+  const { accounts } = useWalletSelector();
 
   if (isExtensionPopup) {
     return null;
@@ -118,8 +236,32 @@ function NavigationButtons() {
   if (page === 'wallet') {
     elements = [
       isExtension && <ConnectionsButton />,
-      <WalletSelector />,
-      <NetworkSelector />,
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+        {walletSelectorOpen ? (
+          <div
+            className="avatar"
+            style={{
+              background: 'transparent',
+            }}
+          >
+            <img
+              src={crossIcon}
+              alt="close"
+              onClick={() => setWalletSelectorOpen((prev) => !prev)}
+            />
+          </div>
+        ) : (
+          <>
+            <NetworkSelector />
+            {accounts.length !== 0 && (
+              <div
+                className="avatar"
+                onClick={() => setWalletSelectorOpen((prev) => !prev)}
+              ></div>
+            )}
+          </>
+        )}
+      </div>,
     ];
   } else if (page === 'connections') {
     elements = [<WalletButton />];
@@ -132,7 +274,7 @@ function NavigationButtons() {
   return elements;
 }
 
-function ExpandButton() {
+export function ExpandButton() {
   const onClick = () => {
     window.open(chrome.extension.getURL('index.html'), '_blank');
   };
@@ -146,7 +288,7 @@ function ExpandButton() {
   );
 }
 
-function WalletButton() {
+export function WalletButton() {
   const classes = useStyles();
   const setPage = usePage()[1];
   const onClick = () => setPage('wallet');
@@ -162,14 +304,14 @@ function WalletButton() {
       </Hidden>
       <Hidden xsDown>
         <Button color="inherit" onClick={onClick} className={classes.button}>
-          Wallet
+          Kunciwallet
         </Button>
       </Hidden>
     </>
   );
 }
 
-function ConnectionsButton() {
+export function ConnectionsButton() {
   const classes = useStyles();
   const setPage = usePage()[1];
   const onClick = () => setPage('connections');
@@ -205,7 +347,7 @@ function ConnectionsButton() {
   );
 }
 
-function NetworkSelector() {
+export function NetworkSelector() {
   const { endpoint, setEndpoint } = useConnectionConfig();
   const cluster = useMemo(() => clusterForEndpoint(endpoint), [endpoint]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -222,23 +364,53 @@ function NetworkSelector() {
           setCustomNetworkOpen(false);
         }}
       />
-      <Hidden xsDown>
-        <Button
+      {/* <Hidden xsDown> */}
+      <select
+        className="custom-select"
+        name="networks"
+        id="networks"
+        onChange={(e) =>
+          e.target.value === 'new_endpoint'
+            ? (() => {
+                setCustomNetworkOpen(true);
+                e.target.value = endpoint;
+              })()
+            : setEndpoint(e.target.value)
+        }
+      >
+        {getClusters().map((cluster) => (
+          <option
+            key={cluster.apiUrl}
+            value={cluster.apiUrl}
+            selected={cluster.apiUrl === endpoint}
+          >
+            {cluster.name === 'mainnet-beta-backup'
+              ? 'Mainnet Beta Backup'
+              : cluster.label}
+          </option>
+        ))}
+        <option value="new_endpoint">
+          {customClusterExists()
+            ? 'Edit Custom Endpoint'
+            : 'Add Custom Endpoint'}
+        </option>
+      </select>
+      {/* <Button
           color="inherit"
           onClick={(e) => setAnchorEl(e.target)}
           className={classes.button}
         >
           {cluster?.label ?? 'Network'}
-        </Button>
-      </Hidden>
-      <Hidden smUp>
+        </Button> */}
+      {/* </Hidden> */}
+      {/* <Hidden smUp>
         <Tooltip title="Select Network" arrow>
           <IconButton color="inherit" onClick={(e) => setAnchorEl(e.target)}>
             <SolanaIcon />
           </IconButton>
         </Tooltip>
-      </Hidden>
-      <Menu
+      </Hidden> */}
+      {/* <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={() => setAnchorEl(null)}
@@ -264,7 +436,7 @@ function NetworkSelector() {
             </ListItemIcon>
             {cluster.name === 'mainnet-beta-backup'
               ? 'Mainnet Beta Backup'
-              : cluster.apiUrl}
+              : cluster.label}
           </MenuItem>
         ))}
         <MenuItem
@@ -277,12 +449,17 @@ function NetworkSelector() {
             ? 'Edit Custom Endpoint'
             : 'Add Custom Endpoint'}
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </>
   );
 }
 
-function WalletSelector() {
+export function WalletSelector({
+  setAddHardwareWalletDialogOpen,
+  setAddAccountOpen,
+  setExportMnemonicOpen,
+  setDeleteMnemonicOpen,
+}) {
   const {
     accounts,
     derivedAccounts,
@@ -292,21 +469,99 @@ function WalletSelector() {
     addAccount,
   } = useWalletSelector();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [addAccountOpen, setAddAccountOpen] = useState(false);
-  const [
-    addHardwareWalletDialogOpen,
-    setAddHardwareWalletDialogOpen,
-  ] = useState(false);
-  const [deleteMnemonicOpen, setDeleteMnemonicOpen] = useState(false);
-  const [exportMnemonicOpen, setExportMnemonicOpen] = useState(false);
   const classes = useStyles();
 
   if (accounts.length === 0) {
     return null;
   }
+
   return (
     <>
-      <AddHardwareWalletDialog
+      <div className="wallet-selector-container">
+        <div
+          style={{
+            padding: '10px 0px',
+          }}
+        >
+          {accounts.map((account) => (
+            <AccountListItem
+              account={account}
+              classes={classes}
+              setAnchorEl={setAnchorEl}
+              setWalletSelector={setWalletSelector}
+            />
+          ))}
+          {hardwareWalletAccount && (
+            <>
+              <AccountListItem
+                account={hardwareWalletAccount}
+                classes={classes}
+                setAnchorEl={setAnchorEl}
+                setWalletSelector={setWalletSelector}
+              />
+            </>
+          )}
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexGrow: 1,
+            flexDirection: 'column',
+            backgroundColor: '#27303f',
+          }}
+        >
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => setAddHardwareWalletDialogOpen(true)}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <UsbIcon fontSize="small" /> */}
+              <img src={hardwareIcon} alt="Add Hardware Wallet" />
+            </ListItemIcon>
+            Import Hardware Wallet
+          </MenuItem>
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => {
+              setAnchorEl(null);
+              setAddAccountOpen(true);
+            }}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <AddIcon fontSize="small" /> */}
+              <img src={addUserIcon} alt="Add Account" />
+            </ListItemIcon>
+            Add Account
+          </MenuItem>
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => {
+              setAnchorEl(null);
+              setExportMnemonicOpen(true);
+            }}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <ImportExportIcon fontSize="small" /> */}
+              <img src={exportIcon} alt="Export Wallet" />
+            </ListItemIcon>
+            Export Secret Phrase
+          </MenuItem>
+          <MenuItem
+            style={{ padding: '15px 20px' }}
+            onClick={() => {
+              setAnchorEl(null);
+              setDeleteMnemonicOpen(true);
+            }}
+          >
+            <ListItemIcon className={classes.menuItemIcon}>
+              {/* <ExitToApp fontSize="small" /> */}
+              <img src={logoutIcon} alt="Logout" />
+            </ListItemIcon>
+            Log Out
+          </MenuItem>
+        </div>
+      </div>
+      {/* <AddHardwareWalletDialog
         open={addHardwareWalletDialogOpen}
         onClose={() => setAddHardwareWalletDialogOpen(false)}
         onAdd={({ publicKey, derivationPath, account, change }) => {
@@ -328,8 +583,8 @@ function WalletSelector() {
             change,
           });
         }}
-      />
-      <AddAccountDialog
+      /> */}
+      {/* <AddAccountDialog
         open={addAccountOpen}
         onClose={() => setAddAccountOpen(false)}
         onAdd={({ name, importedAccount }) => {
@@ -343,16 +598,16 @@ function WalletSelector() {
           });
           setAddAccountOpen(false);
         }}
-      />
-      <ExportMnemonicDialog
+      /> */}
+      {/* <ExportMnemonicDialog
         open={exportMnemonicOpen}
         onClose={() => setExportMnemonicOpen(false)}
-      />
-      <DeleteMnemonicDialog
+      /> */}
+      {/* <DeleteMnemonicDialog
         open={deleteMnemonicOpen}
         onClose={() => setDeleteMnemonicOpen(false)}
-      />
-      <Hidden xsDown>
+      /> */}
+      {/* <Hidden xsDown>
         <Button
           color="inherit"
           onClick={(e) => setAnchorEl(e.target)}
@@ -367,8 +622,8 @@ function WalletSelector() {
             <AccountIcon />
           </IconButton>
         </Tooltip>
-      </Hidden>
-      <Menu
+      </Hidden> */}
+      {/* <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={() => setAnchorEl(null)}
@@ -437,7 +692,7 @@ function WalletSelector() {
           </ListItemIcon>
           {'Delete Mnemonic & Log Out'}
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </>
   );
 }
@@ -460,7 +715,7 @@ function Footer() {
         component="a"
         target="_blank"
         rel="noopener"
-        href="https://github.com/serum-foundation/spl-token-wallet"
+        href="https://github.com/kuncicoin/spl-token-wallet"
         startIcon={<CodeIcon />}
       >
         View Source
@@ -471,24 +726,31 @@ function Footer() {
 
 function AccountListItem({ account, classes, setAnchorEl, setWalletSelector }) {
   return (
-    <MenuItem
+    <div
+      className="account-list-item"
       key={account.address.toBase58()}
       onClick={() => {
         setAnchorEl(null);
         setWalletSelector(account.selector);
       }}
-      selected={account.isSelected}
-      component="div"
     >
-      <ListItemIcon className={classes.menuItemIcon}>
-        {account.isSelected ? <CheckIcon fontSize="small" /> : null}
-      </ListItemIcon>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography>{account.name}</Typography>
-        <Typography color="textSecondary">
-          {account.address.toBase58()}
-        </Typography>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '10px',
+          alignItems: 'center',
+        }}
+      >
+        <div className="avatar" />
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <p style={{ color: '#CECECE', fontSize: '14px' }}>{account.name}</p>
+          <p style={{ color: '#FFF', fontSize: '14px' }}>
+            {shortenAddress(account.address.toBase58())}
+          </p>
+        </div>
       </div>
-    </MenuItem>
+      {account.isSelected ? <img src={checkCircleIcon} alt="check" /> : null}
+    </div>
   );
 }

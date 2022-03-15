@@ -16,7 +16,12 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import { BalanceListItem } from '../components/BalancesList.js';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { DialogActions, DialogContentText, DialogTitle, Typography } from '@material-ui/core';
+import {
+  DialogActions,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
@@ -29,8 +34,20 @@ import { useCallAsync } from '../utils/notifications';
 import Link from '@material-ui/core/Link';
 import { validateMnemonic } from 'bip39';
 import DialogForm from '../components/DialogForm';
+import { useIsExtensionWidth } from '../utils/utils';
+
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import 'react-spring-bottom-sheet/dist/style.css';
+import logo from '../assets/icons/logo.svg';
+import iconFolder from '../assets/icons/icon-folder.svg';
+import iconCross from '../assets/icons/icon-cross.svg';
+import iconWarning from '../assets/icons/icon-warning.svg';
+import NavigationFrame, {
+  NetworkSelector,
+} from '../components/NavigationFrame';
 
 export default function LoginPage() {
+  const isExtensionWidth = useIsExtensionWidth();
   const [restore, setRestore] = useState(false);
   const [hasLockedMnemonicAndSeed, loading] = useHasLockedMnemonicAndSeed();
 
@@ -39,23 +56,23 @@ export default function LoginPage() {
   }
 
   return (
-    <Container maxWidth="sm">
+    <NavigationFrame>
       {restore ? (
         <RestoreWalletForm goBack={() => setRestore(false)} />
       ) : (
         <>
-          {hasLockedMnemonicAndSeed ? <LoginForm /> : <CreateWalletForm />}
-          <br />
-          <Link style={{ cursor: 'pointer' }} onClick={() => setRestore(true)}>
-            Restore existing wallet
-          </Link>
+          {hasLockedMnemonicAndSeed ? (
+            <LoginForm setRestore={setRestore} />
+          ) : (
+            <CreateWalletForm setRestore={setRestore} />
+          )}
         </>
       )}
-    </Container>
+    </NavigationFrame>
   );
 }
 
-function CreateWalletForm() {
+function CreateWalletForm({ setRestore }) {
   const [mnemonicAndSeed, setMnemonicAndSeed] = useState(null);
   useEffect(() => {
     generateMnemonicAndSeed().then(setMnemonicAndSeed);
@@ -83,6 +100,7 @@ function CreateWalletForm() {
     return (
       <SeedWordsForm
         mnemonicAndSeed={mnemonicAndSeed}
+        setRestore={setRestore}
         goForward={() => setSavedWords(true)}
       />
     );
@@ -92,12 +110,13 @@ function CreateWalletForm() {
     <ChoosePasswordForm
       mnemonicAndSeed={mnemonicAndSeed}
       goBack={() => setSavedWords(false)}
+      setRestore={setRestore}
       onSubmit={submit}
     />
   );
 }
 
-function SeedWordsForm({ mnemonicAndSeed, goForward }) {
+function SeedWordsForm({ mnemonicAndSeed, goForward, setRestore }) {
   const [confirmed, setConfirmed] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
@@ -107,20 +126,96 @@ function SeedWordsForm({ mnemonicAndSeed, goForward }) {
     const url = window.URL.createObjectURL(new Blob([mnemonic]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'sollet.bak');
+    link.setAttribute('download', 'kunci.bak');
     document.body.appendChild(link);
     link.click();
-  }
+  };
 
   return (
     <>
-      <Card>
+      <div style={{ paddingTop: '25px' }}>
+        <p className="heading">Create Your Wallet</p>
+        <p className="text">
+          Create a new wallet to connect KunciCoin and SPL token.
+        </p>
+      </div>
+      <hr />
+      <ul style={{ marginBottom: '20px' }}>
+        <li>
+          Please write down the following 24 words and keep them in a safe
+          place.
+        </li>
+        <li>
+          You will need these words to restore your wallet. Kunci Wallet never
+          saved or stored the secret phrase that has given.
+        </li>
+        <li>Do NOT ever share this phrase to another party.</li>
+      </ul>
+      <p className="text" style={{ marginBottom: '20px' }}>
+        By default, wallet will use m/44'/501'/0'/0' as the derivation path for
+        the main wallet. To use an alternative path, try restoring an existing
+        wallet.
+      </p>
+      <p style={{ fontSize: '12px', marginBottom: '10px' }}>Secret Phrase</p>
+      {mnemonicAndSeed ? (
+        <div className="secret-phrase">
+          <p>{mnemonicAndSeed.mnemonic}</p>
+        </div>
+      ) : (
+        <LoadingIndicator />
+      )}
+      <button
+        className="button"
+        style={{ marginTop: '20px' }}
+        onClick={() => {
+          downloadMnemonic(mnemonicAndSeed?.mnemonic);
+          setDownloaded(true);
+        }}
+      >
+        <img src={iconFolder} alt="icon" /> Download the Secrete Phrase
+      </button>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={confirmed}
+            disabled={!mnemonicAndSeed}
+            onChange={(e) => setConfirmed(e.target.checked)}
+            color="default"
+          />
+        }
+        label="I have saved the secret phrase in a safe place."
+      />
+      <div
+        style={{
+          gap: '10px',
+          display: 'flex',
+          width: '100%',
+          marginTop: '20px',
+          justifyContent: 'space-between',
+        }}
+      >
+        <button className="button-outline" onClick={() => setRestore(true)}>
+          Restore wallet
+        </button>
+        <button
+          className={
+            !confirmed || !downloaded
+              ? 'button-outline-secondary'
+              : 'button-outline'
+          }
+          disabled={!confirmed || !downloaded}
+          onClick={() => setShowDialog(true)}
+        >
+          Continue
+        </button>
+      </div>
+      {/* <Card>
         <CardContent>
           <Typography variant="h5" gutterBottom>
             Create New Wallet
           </Typography>
           <Typography paragraph>
-            Create a new wallet to hold Solana and SPL tokens.
+            Create a new wallet to hold Kuncicoin and SPL tokens.
           </Typography>
           <Typography>
             Please write down the following twenty four words and keep them in a
@@ -140,12 +235,12 @@ function SeedWordsForm({ mnemonicAndSeed, goForward }) {
             <LoadingIndicator />
           )}
           <Typography paragraph>
-            Your private keys are only stored on your current computer or device.
-            You will need these words to restore your wallet if your browser's
-            storage is cleared or your device is damaged or lost.
+            Your private keys are only stored on your current computer or
+            device. You will need these words to restore your wallet if your
+            browser's storage is cleared or your device is damaged or lost.
           </Typography>
           <Typography paragraph>
-            By default, sollet will use <code>m/44'/501'/0'/0'</code> as the
+            By default, wallet will use <code>m/44'/501'/0'/0'</code> as the
             derivation path for the main wallet. To use an alternative path, try
             restoring an existing wallet.
           </Typography>
@@ -160,21 +255,83 @@ function SeedWordsForm({ mnemonicAndSeed, goForward }) {
             label="I have saved these words in a safe place."
           />
           <Typography paragraph>
-          <Button variant="contained" color="primary" style={{ marginTop: 20 }} onClick={() => {
-            downloadMnemonic(mnemonicAndSeed?.mnemonic);
-            setDownloaded(true);
-          }}>
-            Download Backup Mnemonic File (Required)
-          </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginTop: 20 }}
+              onClick={() => {
+                downloadMnemonic(mnemonicAndSeed?.mnemonic);
+                setDownloaded(true);
+              }}
+            >
+              Download Backup Mnemonic File (Required)
+            </Button>
           </Typography>
         </CardContent>
         <CardActions style={{ justifyContent: 'flex-end' }}>
-          <Button color="primary" disabled={!confirmed || !downloaded} onClick={() => setShowDialog(true)}>
+          <Button
+            color="primary"
+            disabled={!confirmed || !downloaded}
+            onClick={() => setShowDialog(true)}
+          >
             Continue
           </Button>
         </CardActions>
-      </Card>
-      <DialogForm
+      </Card> */}
+      <BottomSheet
+        id="register-bottom-sheet"
+        style={{ maxWidth: '480px', backgroundColor: '#1a202c' }}
+        open={showDialog}
+        onDismiss={() => setShowDialog(false)}
+      >
+        <div style={{ padding: '25px', paddingTop: '0' }}>
+          <div
+            style={{
+              padding: '10px 0',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <p className="sub-heading">Confirm Your Secret Phrase</p>
+            <img
+              style={{ width: '12px', height: '12px', cursor: 'pointer' }}
+              src={iconCross}
+              alt="icon"
+              onClick={() => setShowDialog(false)}
+            />
+          </div>
+          <hr />
+          <form onSubmit={goForward}>
+            <p style={{ fontSize: '12px' }}>Secret Phrase</p>
+            <textarea
+              className="secret-phrase textarea"
+              placeholder="paste here"
+              value={seedCheck}
+              onChange={(e) => setSeedCheck(e.target.value)}
+            />
+            <button
+              className="button"
+              style={{
+                width: '100%',
+                marginTop: '20px',
+                opacity:
+                  normalizeMnemonic(seedCheck) !== mnemonicAndSeed?.mnemonic
+                    ? 0.5
+                    : 1,
+              }}
+              type="submit"
+              disabled={
+                normalizeMnemonic(seedCheck) !== mnemonicAndSeed?.mnemonic
+              }
+            >
+              Continue
+            </button>
+          </form>
+        </div>
+      </BottomSheet>
+      {/* <DialogForm
         open={showDialog}
         onClose={() => setShowDialog(false)}
         onSubmit={goForward}
@@ -204,69 +361,140 @@ function SeedWordsForm({ mnemonicAndSeed, goForward }) {
           <Button
             type="submit"
             color="secondary"
-            disabled={normalizeMnemonic(seedCheck) !== mnemonicAndSeed?.mnemonic}
+            disabled={
+              normalizeMnemonic(seedCheck) !== mnemonicAndSeed?.mnemonic
+            }
           >
             Continue
           </Button>
         </DialogActions>
-      </DialogForm>
+      </DialogForm> */}
     </>
   );
 }
 
-function ChoosePasswordForm({ goBack, onSubmit }) {
+function ChoosePasswordForm({ setRestore, goBack, onSubmit }) {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Choose a Password (Optional)
-        </Typography>
-        <Typography>
-          Optionally pick a password to protect your wallet.
-        </Typography>
-        <TextField
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          label="New Password"
-          type="password"
-          autoComplete="new-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <TextField
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          label="Confirm Password"
-          type="password"
-          autoComplete="new-password"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
-        />
-        <Typography>
-          If you forget your password you will need to restore your wallet using
-          your seed words.
-        </Typography>
-      </CardContent>
-      <CardActions style={{ justifyContent: 'space-between' }}>
-        <Button onClick={goBack}>Back</Button>
-        <Button
-          color="primary"
+    <>
+      <div style={{ paddingTop: '25px' }}>
+        <button className="button-ghost" onClick={goBack}>
+          Back
+        </button>
+        <p className="heading" style={{ marginBottom: '10px' }}>
+          Set a Password (optional)
+        </p>
+        <p className="text">
+          Create a Password to increase the protection of your wallet.
+        </p>
+      </div>
+      <hr />
+      <label style={{ marginTop: '10px' }} for="new-password">
+        New password
+      </label>
+      <input
+        style={{ marginTop: '2px' }}
+        id="new-password"
+        className="custom-input"
+        placeholder="type password"
+        label="New Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <label for="new-password">Confirm password</label>
+      <input
+        style={{ marginTop: '2px' }}
+        id="re-new-password"
+        className="custom-input"
+        placeholder="re-type password"
+        label="Confirm Password"
+        type="password"
+        value={passwordConfirm}
+        onChange={(e) => setPasswordConfirm(e.target.value)}
+      />
+      <ul>
+        <li>
+          If you forget your password, you will need to restore your wallet
+          using the secret recovery phrase.
+        </li>
+        <li>We CAN NOT recover your Secret Recovery Password.</li>
+      </ul>
+      <div
+        style={{
+          gap: '10px',
+          display: 'flex',
+          width: '100%',
+          marginTop: '20px',
+          justifyContent: 'space-between',
+        }}
+      >
+        <button className="button-outline" onClick={() => setRestore(true)}>
+          Restore wallet
+        </button>
+        <button
+          className="button"
+          style={{
+            width: '200px',
+            opacity: password !== passwordConfirm ? 0.5 : 1,
+          }}
           disabled={password !== passwordConfirm}
           onClick={() => onSubmit(password)}
         >
           Create Wallet
-        </Button>
-      </CardActions>
-    </Card>
+        </button>
+      </div>
+    </>
+    // <Card>
+    //   <CardContent>
+    //     <Typography variant="h5" gutterBottom>
+    //       Choose a Password (Optional)
+    //     </Typography>
+    //     <Typography>
+    //       Optionally pick a password to protect your wallet.
+    //     </Typography>
+    //     <TextField
+    //       variant="outlined"
+    //       fullWidth
+    //       margin="normal"
+    //       label="New Password"
+    //       type="password"
+    //       autoComplete="new-password"
+    //       value={password}
+    //       onChange={(e) => setPassword(e.target.value)}
+    //     />
+    //     <TextField
+    //       variant="outlined"
+    //       fullWidth
+    //       margin="normal"
+    //       label="Confirm Password"
+    //       type="password"
+    //       autoComplete="new-password"
+    //       value={passwordConfirm}
+    //       onChange={(e) => setPasswordConfirm(e.target.value)}
+    //     />
+    //     <Typography>
+    //       If you forget your password you will need to restore your wallet using
+    //       your seed words.
+    //     </Typography>
+    //   </CardContent>
+    //   <CardActions style={{ justifyContent: 'space-between' }}>
+    //     <Button onClick={goBack}>Back</Button>
+    //     <Button
+    //       color="primary"
+    //       disabled={password !== passwordConfirm}
+    //       onClick={() => onSubmit(password)}
+    //     >
+    //       Create Wallet
+    //     </Button>
+    //   </CardActions>
+    // </Card>
   );
 }
 
-function LoginForm() {
+function LoginForm({ setRestore }) {
   const [password, setPassword] = useState('');
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const callAsync = useCallAsync();
@@ -276,50 +504,93 @@ function LoginForm() {
       progressMessage: 'Unlocking wallet...',
       successMessage: 'Wallet unlocked',
     });
-  }
+  };
   const submitOnEnter = (e) => {
-    if (e.code === "Enter" || e.code === "NumpadEnter") {
+    if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       e.preventDefault();
       e.stopPropagation();
       submit();
     }
-  }
+  };
   const setPasswordOnChange = (e) => setPassword(e.target.value);
   const toggleStayLoggedIn = (e) => setStayLoggedIn(e.target.checked);
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Unlock Wallet
-        </Typography>
-        <TextField
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={setPasswordOnChange}
-          onKeyDown={submitOnEnter}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={stayLoggedIn}
-              onChange={toggleStayLoggedIn}
-            />
-          }
-          label="Keep wallet unlocked"
-        />
-      </CardContent>
-      <CardActions style={{ justifyContent: 'flex-end' }}>
-        <Button color="primary" onClick={submit}>
+    <>
+      <div style={{ marginBottom: '20px', marginTop: '25px' }}>
+        <p className="heading">Unlock Wallet</p>
+      </div>
+      <label for="password">Your Password</label>
+      <input
+        style={{ marginTop: '2px' }}
+        id="password"
+        className="custom-input"
+        placeholder="type password"
+        label="Password"
+        type="password"
+        value={password}
+        onChange={setPasswordOnChange}
+        onKeyDown={submitOnEnter}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox checked={stayLoggedIn} onChange={toggleStayLoggedIn} />
+        }
+        label="Keep wallet unlocked"
+      />
+
+      <section style={{ display: 'flex', gap: '15px' }}>
+        <button
+          className="button-outline"
+          style={{
+            marginTop: '11px',
+            width: '100%',
+          }}
+          onClick={() => setRestore(true)}
+        >
+          Restore Wallet
+        </button>
+        <button
+          className="button"
+          style={{
+            marginTop: '11px',
+            width: '100%',
+          }}
+          onClick={submit}
+        >
           Unlock
-        </Button>
-      </CardActions>
-    </Card>
+        </button>
+      </section>
+    </>
+    // <Card>
+    //   <CardContent>
+    //     <Typography variant="h5" gutterBottom>
+    //       Unlock Wallet
+    //     </Typography>
+    //     <TextField
+    //       variant="outlined"
+    //       fullWidth
+    //       margin="normal"
+    //       label="Password"
+    //       type="password"
+    //       autoComplete="current-password"
+    //       value={password}
+    //       onChange={setPasswordOnChange}
+    //       onKeyDown={submitOnEnter}
+    //     />
+    //     <FormControlLabel
+    //       control={
+    //         <Checkbox checked={stayLoggedIn} onChange={toggleStayLoggedIn} />
+    //       }
+    //       label="Keep wallet unlocked"
+    //     />
+    //   </CardContent>
+    //   <CardActions style={{ justifyContent: 'flex-end' }}>
+    //     <Button color="primary" onClick={submit}>
+    //       Unlock
+    //     </Button>
+    //   </CardActions>
+    // </Card>
   );
 }
 
@@ -333,7 +604,8 @@ function RestoreWalletForm({ goBack }) {
   const mnemonic = normalizeMnemonic(rawMnemonic);
   const isNextBtnEnabled =
     password === passwordConfirm && validateMnemonic(mnemonic);
-  const displayInvalidMnemonic = validateMnemonic(mnemonic) === false && mnemonic.length > 0;
+  const displayInvalidMnemonic =
+    validateMnemonic(mnemonic) === false && mnemonic.length > 0;
   return (
     <>
       {next ? (
@@ -344,7 +616,85 @@ function RestoreWalletForm({ goBack }) {
           seed={seed}
         />
       ) : (
-        <Card>
+        <>
+          <div style={{ paddingTop: '25px' }}>
+            <button className="button-ghost" onClick={goBack}>
+              Back
+            </button>
+            <p className="heading">Restore Existing Wallet</p>
+          </div>
+          <div id="alert" className="warning-alert">
+            <img src={iconWarning} alt="warning" />
+            <p>NOTE: It will delete any existing wallet in this device.</p>
+          </div>
+          <ul>
+            <li>Restore wallet using 24-words secret phrase.</li>
+            <li>
+              <b>DO NOT enter your hardware wallet secret phrase.</b> Hardware
+              wallets can be optionally connected after a web wallet is
+              connected.
+            </li>
+          </ul>
+          <p style={{ fontSize: '12px', margin: '0px' }}>The Secret Phrase</p>
+          <textarea
+            className="secret-phrase textarea"
+            placeholder="paste here"
+            value={rawMnemonic}
+            onChange={(e) => setRawMnemonic(e.target.value)}
+          />
+          <label style={{ marginTop: '20px' }} for="new-password">
+            New password (optional)
+          </label>
+          <input
+            id="new-password"
+            className="custom-input"
+            placeholder="type password"
+            label="New Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <label for="new-password">Confirm password</label>
+          <input
+            id="re-new-password"
+            className="custom-input"
+            placeholder="re-type password"
+            label="Confirm Password"
+            type="password"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+          />
+          <div
+            style={{
+              gap: '10px',
+              display: 'flex',
+              width: '100%',
+              marginTop: '20px',
+              justifyContent: 'space-between',
+            }}
+          >
+            <button className="button-outline" onClick={goBack}>
+              Cancel
+            </button>
+            <button
+              className="button"
+              style={{
+                width: '200px',
+                opacity: !isNextBtnEnabled ? 0.5 : 1,
+              }}
+              disabled={!isNextBtnEnabled}
+              onClick={() => {
+                mnemonicToSeed(mnemonic).then((seed) => {
+                  setSeed(seed);
+                  setNext(true);
+                });
+              }}
+            >
+              Next
+            </button>
+          </div>
+
+          {/* <Card>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Restore Existing Wallet
@@ -359,9 +709,10 @@ function RestoreWalletForm({ goBack }) {
               wallets can be optionally connected after a web wallet is created.
             </Typography>
             {displayInvalidMnemonic && (
-               <Typography fontWeight="fontWeightBold" style={{ color: 'red' }}>
-                 Mnemonic validation failed. Please enter a valid BIP 39 seed phrase.
-               </Typography>
+              <Typography fontWeight="fontWeightBold" style={{ color: 'red' }}>
+                Mnemonic validation failed. Please enter a valid BIP 39 seed
+                phrase.
+              </Typography>
             )}
             <TextField
               variant="outlined"
@@ -409,7 +760,8 @@ function RestoreWalletForm({ goBack }) {
               Next
             </Button>
           </CardActions>
-        </Card>
+        </Card> */}
+        </>
       )}
     </>
   );

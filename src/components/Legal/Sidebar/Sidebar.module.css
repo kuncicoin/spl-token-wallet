@@ -1,0 +1,33 @@
+.sidebar > section {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 230px;
+}
+
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.003em;
+  transition: 300ms;
+}
+
+.sidebar a:hover {
+  opacity: 0.7;
+}
+
+@media only screen and (max-width: 640px) {
+  .sidebar {
+    display: flex;
+  }
+
+  .sidebar > section {
+    min-width: auto;
+    width: 100%;
+  }
+}
