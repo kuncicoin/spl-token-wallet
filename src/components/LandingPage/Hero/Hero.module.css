@@ -1,8 +1,8 @@
 .hero {
   width: 100%;
   height: 830px;
-  background: url('../../../assets/illustration/hero-accent.svg') no-repeat,
-    url('../../../assets/illustration/hero-bg.svg') no-repeat;
+  background: url('../../../assets/illustration/hero-bg.svg') no-repeat;
+  background-size: cover;
   position: relative;
   z-index: 999;
 }

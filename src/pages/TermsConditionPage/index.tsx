@@ -26,9 +26,9 @@ const TermsConditionPage = () => {
           <h2>
             Before accessing and using kunciwallet.com, we recommend that you
             read the General Rules and Terms and Conditions first. By accessing
-            and using this kunciwallet.com, you agree toF be bound by the
-            General Rules and these Terms and Conditions. Terms and conditions
-            may change from time to time without notice in advance before the
+            and using this kunciwallet.com, you agree to be bound by the General
+            Rules and these Terms and Conditions. Terms and conditions may
+            change from time to time without notice in advance before the
             changes take effect.
           </h2>
 
