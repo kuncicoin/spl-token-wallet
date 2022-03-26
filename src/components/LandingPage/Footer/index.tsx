@@ -8,7 +8,7 @@ const Footer = ({ variant = 'EN' }) => {
     <div className={styles.footer}>
       <section>
         <section>
-          <p>{variant === 'EN' ? 'About Us' : 'Tentang Kami'}</p>
+          {/* <p>{variant === 'EN' ? 'About Us' : 'Tentang Kami'}</p> */}
           <p onClick={() => navigate('/privacy-policy')}>Privacy Policy</p>
           <p onClick={() => navigate('/terms-n-condition')}>
             Terms and Conditions
