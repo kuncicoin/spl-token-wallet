@@ -25,7 +25,7 @@
 
 .hero > section > section:first-child > h1 {
   font-weight: 600;
-  font-size: 55px;
+  font-size: 50px;
   line-height: 130%;
   letter-spacing: 0.003em;
   color: #ffffff;
@@ -102,7 +102,7 @@
   }
 
   .hero {
-    background: url('../../../assets/illustration/hero-bg.svg') no-repeat;
+    background: url('../../../assets/illustration/hero-bg-m.svg') no-repeat;
     background-size: cover;
     height: auto;
     /* height: 794px; */

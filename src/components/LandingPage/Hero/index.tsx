@@ -27,7 +27,7 @@ const Hero = ({ variant = 'EN' }) => {
             ) : (
               <>
                 <h1>
-                  Satu wallet untuk <br /> kelola semua aset <br /> kripto Anda
+                  Satu wallet untuk kelola <br /> semua aset kripto Anda
                 </h1>
                 <p>Buka wallet Anda & jelajahi alam semesta kripto</p>
                 <section onClick={() => navigate('/wallet')}>
@@ -39,7 +39,7 @@ const Hero = ({ variant = 'EN' }) => {
           </section>
 
           <section>
-            <img src="/illustration/hero-image.svg" alt="KunciWallet" />
+            <img src="/illustration/hero-image.png" alt="KunciWallet" />
           </section>
         </section>
       </div>
