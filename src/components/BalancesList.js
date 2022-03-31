@@ -252,7 +252,7 @@ export default function BalancesList({
             </div>
           </Tooltip>
         </div>
-        <div
+        {/* <div
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -331,7 +331,7 @@ export default function BalancesList({
               Token
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
       <hr />
       <List style={{ position: 'static' }}>
