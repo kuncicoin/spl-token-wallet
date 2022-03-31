@@ -56,13 +56,19 @@ const Navbar = ({ variant = 'EN', setVariant }) => {
   const Menus = () => (
     <>
       <p>
-        <a href="#hero">{variant === 'EN' ? 'Home' : 'Beranda'}</a>
+        <a href="#hero" onClick={() => setShowMenu(false)}>
+          {variant === 'EN' ? 'Home' : 'Beranda'}
+        </a>
       </p>
       <p>
-        <a href="#our-value">{variant === 'EN' ? 'Explore' : 'Jelajah'}</a>
+        <a href="#our-value" onClick={() => setShowMenu(false)}>
+          {variant === 'EN' ? 'Explore' : 'Jelajah'}
+        </a>
       </p>
       <p>
-        <a href="#guidance">{variant === 'EN' ? 'Guidance' : 'Panduan'}</a>
+        <a href="#guidance" onClick={() => setShowMenu(false)}>
+          {variant === 'EN' ? 'Guidance' : 'Panduan'}
+        </a>
       </p>
     </>
   );
@@ -80,7 +86,10 @@ const Navbar = ({ variant = 'EN', setVariant }) => {
           <img
             src={`/icon/m-id${variant === 'EN' ? '' : '-on'}.svg`}
             alt="ID"
-            onClick={() => setVariant('ID')}
+            onClick={() => {
+              setVariant('ID');
+              setShowMenu(false);
+            }}
           />
           <section
             style={{ borderRight: '1px solid #FFFFFF', height: '20px' }}
@@ -88,7 +97,10 @@ const Navbar = ({ variant = 'EN', setVariant }) => {
           <img
             src={`/icon/m-en${variant === 'EN' ? '-on' : ''}.svg`}
             alt="EN"
-            onClick={() => setVariant('EN')}
+            onClick={() => {
+              setVariant('EN');
+              setShowMenu(false);
+            }}
           />
         </section>
       </div>
